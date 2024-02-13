@@ -42,13 +42,14 @@
             name="income1" v-model="eats">
         </div>
         <div class="input-container">
-          <label for="income2">Savings</label>
-          <input :style="`border-left-color: ${chartData.datasets[0].backgroundColor[5]}`" class="input" type="number"
+          <label :style="`color: ${totalSavings === 0 ? '#ff00008c' : ''}`" for="income2">Savings</label>
+          <input disabled :style="`border-left-color: ${chartData.datasets[0].backgroundColor[5]}; color: gray; color: ${totalSavings === 0 ? '#ff00008c' : ''}`" class="input" type="number"
             name="income2" v-model="savings">
         </div>
       </div>
     </div>
     <div class="section">
+      <h2>${{ totalIncome }}MXN</h2>
       <canvas ref="myChart"></canvas>
     </div>
     <div class="section"></div>
@@ -56,6 +57,10 @@
 </template>
 
 <style scoped>
+* {
+  color: white;
+}
+
 #container {
   display: flex;
   justify-content: center;
@@ -73,6 +78,12 @@ canvas {
   display: flex;
   justify-content: center;
   flex-direction: column;
+}
+
+.section:nth-child(2) {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 label {
@@ -203,6 +214,17 @@ export default {
       this.updateChart();
     },
   },
+  computed: {
+    totalIncome() {
+      return this.income1 + this.income2;
+    },
+    totalExpenses() {
+      return this.rent + this.tax + this.bills + this.food + this.eats;
+    },
+    totalSavings() {
+      return this.totalIncome - this.totalExpenses < 0 ? 0 : this.totalIncome - this.totalExpenses;
+    }
+  },
   methods: {
     updateChart() {
       this.chartData.datasets[0].data[0] = this.rent; 
@@ -210,7 +232,7 @@ export default {
       this.chartData.datasets[0].data[2] = this.bills; 
       this.chartData.datasets[0].data[3] = this.food; 
       this.chartData.datasets[0].data[4] = this.eats; 
-      this.chartData.datasets[0].data[5] = this.savings; 
+      this.chartData.datasets[0].data[5] = this.totalSavings; 
       localStorage.setItem('chartData', JSON.stringify(this.chartData));
       localStorage.setItem('income1', JSON.stringify(this.income1));
       localStorage.setItem('income2', JSON.stringify(this.income2));
