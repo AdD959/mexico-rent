@@ -44,7 +44,7 @@
         <div class="input-container">
           <label :style="`color: ${totalSavings === 0 ? '#ff00008c' : ''}`" for="income2">Savings</label>
           <input disabled :style="`border-left-color: ${chartData.datasets[0].backgroundColor[5]}; color: gray; color: ${totalSavings === 0 ? '#ff00008c' : ''}`" class="input" type="number"
-            name="income2" v-model="savings">
+            name="income2" v-model="totalSavings">
         </div>
       </div>
     </div>
