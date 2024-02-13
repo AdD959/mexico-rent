@@ -1,0 +1,64 @@
+<html>
+
+<head>
+    <title>Outgoing Expenses Chart</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            background-color: black
+        }
+
+        #myChart {
+            max-width: 600px;
+            max-height: 800px;
+        }
+
+        .section {
+            flex: 1;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="section">
+
+    </div>
+    <div class="section">
+        <canvas id="myChart"></canvas>
+    </div>
+    <div class="section"></div>
+    <script>
+        const ctx = document.getElementById('myChart').getContext('2d');
+        const myChart = new Chart(ctx, {
+            type: 'doughnut', // Type of chart
+            data: {
+                labels: ['Rent', 'Bills', 'Taxes/Government', 'Food', 'Eating Out', 'Savings'],
+                datasets: [{
+                    label: 'Outgoing Expenses',
+                    data: [1200, 350, 400, 200, 150, 500], // Your actual expense data
+                    backgroundColor: ["#1c1c1c","#3d3d3d","#666666", "#E3D26F", "#5BBA6F", "#5adbff"],
+                    borderWidth: 0
+                }]
+            },
+            options: {
+                maintainAspectRatio: true,
+                responsive: true,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Monthly Outgoing Expenses Breakdown'
+                    },
+                    emptyDoughnut: {
+                        color: 'rgba(255, 128, 0, 0.5)',
+                        width: 2,
+                        radiusDecrease: 20
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>
