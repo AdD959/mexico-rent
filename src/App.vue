@@ -17,6 +17,10 @@
       </div>
       <div class="input-collection">
         <div class="input-container">
+          <div class="pcnt">
+            <span>{{ percentageOfTotalIncome }}</span>
+            <span>of total income</span>
+          </div>
           <label for="income1">Rent</label>
           <div class="money">
             <input :style="`border-left-color: ${chartData.datasets[0].backgroundColor[0]}`" class="input" type="number"
@@ -96,6 +100,24 @@ canvas {
   height: 800px;
 }
 
+.pcnt {
+  position: absolute;
+  left: -83px;
+  top: 26px;
+  font-size: 16px;
+  display: flex;
+  flex-direction: column;
+}
+
+.pcnt > span {
+  text-align: end;
+  color: grey;
+}
+
+.pcnt > span:last-child {
+  font-size: 12px;
+}
+
 .section {
   height: 500px;
   position: relative;
@@ -156,7 +178,7 @@ label {
   color: gray;
 }
 
-.input-container > div {
+.input-container > div:not(.pcnt) {
   position: relative;
 }
 
@@ -278,6 +300,9 @@ export default {
     },
     totalFood() {
       return Math.round(this.food - (this.siVale * 4307.68));
+    },
+    percentageOfTotalIncome() {
+      return `${Math.round((this.rent / this.totalIncome) * 100)}%`;
     }
   },
   methods: {
