@@ -1,4 +1,5 @@
 <template>
+  <button @click="binStorage()" id="bin">BIN</button>
   <div id="container">
     <div class="section">
       <div class="input-collection">
@@ -24,14 +25,14 @@
           <label for="income1">Rent</label>
           <div class="money">
             <input :style="`border-left-color: ${chartData.datasets[0].backgroundColor[0]}`" class="input" type="number"
-            name="income1" v-model="rent">
+              name="income1" v-model="rent">
           </div>
         </div>
         <div class="input-container disabled">
           <label for="income2">Tax</label>
           <div class="money">
-            <input disabled :style="`border-left-color: ${chartData.datasets[0].backgroundColor[1]}; color: gray;`" class="input" type="number"
-            name="income2" v-model="tax">
+            <input disabled :style="`border-left-color: ${chartData.datasets[0].backgroundColor[1]}; color: gray;`"
+              class="input" type="number" name="income2" v-model="tax">
           </div>
         </div>
       </div>
@@ -40,14 +41,14 @@
           <label for="income1">Bills</label>
           <div class="money">
             <input :style="`border-left-color: ${chartData.datasets[0].backgroundColor[2]}`" class="input" type="number"
-            name="income1" v-model="bills">
+              name="income1" v-model="bills">
           </div>
         </div>
         <div class="input-container">
           <label for="income2">Food</label>
           <div class="money">
             <input :style="`border-left-color: ${chartData.datasets[0].backgroundColor[3]}`" class="input" type="number"
-            name="income2" v-model="food">
+              name="income2" v-model="food">
           </div>
         </div>
       </div>
@@ -56,23 +57,31 @@
           <label for="income1">Activities</label>
           <div class="money">
             <input :style="`border-left-color: ${chartData.datasets[0].backgroundColor[4]}`" class="input" type="number"
-            name="income1" v-model="eats">
+              name="income1" v-model="eats">
           </div>
         </div>
         <div class="input-container disabled">
           <label :style="`color: ${totalSavings <= 0 ? '#ff00008c' : ''}`" for="income2">Savings</label>
           <div class="money">
             <input disabled
-            :style="`border-left-color: ${ totalSavings <= 0 ? '#ff00008c' : chartData.datasets[0].backgroundColor[5]}; color: gray; color: ${totalSavings <= 0 ? '#ff00008c' : ''}`"
-            class="input" type="number" name="income2" v-model="totalSavings">
+              :style="`border-left-color: ${totalSavings <= 0 ? '#ff00008c' : chartData.datasets[0].backgroundColor[5]}; color: gray; color: ${totalSavings <= 0 ? '#ff00008c' : ''}`"
+              class="input" type="number" name="income2" v-model="totalSavings">
           </div>
         </div>
       </div>
-      <div class="input-container">
-        <label for="si-vale">Si Vale (quantity of cards)</label>
-        <div>
-          <input
-          class="input" type="number" name="si-vale" v-model="siVale">
+      <div class="input-collection">
+        <div class="input-container">
+          <label for="si-vale">Si Vale (quantity of cards)</label>
+          <div>
+            <input class="input" type="number" name="si-vale" v-model="siVale">
+          </div>
+        </div>
+        <div class="input-container">
+          <label for="currency">Currency</label>
+          <div id="currency" name="currency">
+            <button :class="gbp ? 'selected' : 'unselected'" @click="changeToGBP()">GBP</button>
+            <button :class="mxn ? 'selected' : 'unselected'" @click="changeToMXN()">MXN</button>
+          </div>
         </div>
       </div>
     </div>
@@ -86,6 +95,43 @@
 
 <style scoped>
 * {
+  color: white;
+}
+#bin {
+  width: 50px;
+  height: 50px;
+  border-radius: 100%;
+  background-color: grey;
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  outline: none;  
+  border: none;
+}
+
+.selected {
+  border-color: white;
+  border: 2px
+}
+.selected {
+  border-color: transparent;
+  border: 2px
+}
+
+#currency {
+  display: flex;
+  gap: 8px;
+  justify-content: space-between;
+  width: 100px;
+  background-color: black;
+  padding: 4px;
+}
+
+#currency>button {
+  background-color: rgb(33 33 33);
+  font-size: 24px;
+  outline: none;
+  border: none;
   color: white;
 }
 
@@ -109,12 +155,12 @@ canvas {
   flex-direction: column;
 }
 
-.pcnt > span {
+.pcnt>span {
   text-align: end;
   color: grey;
 }
 
-.pcnt > span:last-child {
+.pcnt>span:last-child {
   font-size: 12px;
 }
 
@@ -165,7 +211,7 @@ label {
   border-left: solid 8px;
 }
 
-.input-container > .money::before {
+.input-container>.money::before {
   content: '$';
   position: absolute;
   left: 14px;
@@ -174,11 +220,11 @@ label {
   color: white;
 }
 
-.input-container.disabled > div::before {
+.input-container.disabled>div::before {
   color: gray;
 }
 
-.input-container > div:not(.pcnt) {
+.input-container>div:not(.pcnt) {
   position: relative;
 }
 
@@ -212,6 +258,8 @@ export default {
       income1: 0,
       income2: 0,
       siVale: 1,
+      gbp: false,
+      mxn: true, 
       chartData: {
         labels: ['Rent', 'Tax', 'Bills', 'Food', 'Eating Out', 'Savings'],
         datasets: [{
@@ -306,6 +354,35 @@ export default {
     }
   },
   methods: {
+    binStorage() {
+      localStorage.clear();
+    },
+    changeToGBP() {
+      if (this.mxn) {
+      this.rent = Math.round(this.rent * 0.041);
+      this.bills = Math.round(this.bills * 0.041);
+      this.food = Math.round(this.food * 0.041);
+      this.eats = Math.round(this.eats * 0.041);
+      this.savings = Math.round(this.savings * 0.041);
+      this.income1 = Math.round(this.income1 * 0.041);
+      this.income2 = Math.round(this.income2 * 0.041);
+      this.gbp = true;
+      this.mxn = false;
+      }
+    },
+    changeToMXN() {
+      if (this.gbp) {
+      this.rent = Math.round(this.rent / 0.041);
+      this.bills = Math.round(this.bills / 0.041);
+      this.food = Math.round(this.food / 0.041);
+      this.eats = Math.round(this.eats / 0.041);
+      this.savings = Math.round(this.savings / 0.041);
+      this.income1 = Math.round(this.income1 / 0.041);
+      this.income2 = Math.round(this.income2 / 0.041);
+      this.mxn = true;
+      this.gbp = false;
+      }
+    },
     updateChart() {
       this.chartData.datasets[0].data[0] = this.rent;
       this.chartData.datasets[0].data[1] = this.tax;
