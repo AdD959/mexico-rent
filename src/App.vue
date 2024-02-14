@@ -53,7 +53,7 @@
       </div>
       <div class="input-collection">
         <div class="input-container">
-          <label for="income1">Eating Out</label>
+          <label for="income1">Activities</label>
           <div class="money">
             <input :style="`border-left-color: ${chartData.datasets[0].backgroundColor[4]}`" class="input" type="number"
             name="income1" v-model="eats">
