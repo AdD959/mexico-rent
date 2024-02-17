@@ -1,14 +1,23 @@
 <template>
-  <div :class="dark ? 'dark' : ''" ref="site">
-    <main class="dark:bg-slate-950 dark:text-slate-400 bg-slate-400 text-slate-950">
-      <button @click="setTheme()">click here</button>
-      <h1>Et excepteur laboris veniam velit consequat incididunt pariatur esse commodo proident.</h1>
+  <div :class="dark ? 'dark' : ''" ref="site" class="w-full h-full">
+    <main class="dark:bg-slate-950 dark:text-slate-400 bg-slate-400 text-slate-950 w-full h-full p-10">
+      <Nav />
+      <Heading />
+      <Body />
     </main>
   </div>
 </template>
 
 <script>
+import Heading from '@/components/Heading.vue'
+import Body from '@/components/Body.vue'
+import Nav from '@/components/Nav.vue'
 export default {
+  components: {
+    Heading,
+    Body,
+    Nav
+  },
   data() {
     return {
       dark: false
