@@ -25,7 +25,7 @@ export default {
   },
   provide() {
     return {
-      isDarkMode: (isDarkMode) => { this.dark = isDarkMode }
+      isDarkMode: (isDarkMode) => { this.setTheme(isDarkMode) }
     }
   },
   mounted() {
@@ -36,8 +36,8 @@ export default {
     }
   },
   methods: {
-    setTheme() {
-      this.dark = !this.dark
+    setTheme(theme) {
+      if (theme) { this.dark = theme } else { this.dark = !this.dark }
       localStorage.theme = this.dark ? 'dark' : 'light'
     }
   },
