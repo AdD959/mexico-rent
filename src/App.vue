@@ -23,6 +23,11 @@ export default {
       dark: false
     }
   },
+  provide() {
+    return {
+      isDarkMode: (isDarkMode) => { this.dark = isDarkMode }
+    }
+  },
   mounted() {
     if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
       this.dark = true
