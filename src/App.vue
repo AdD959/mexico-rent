@@ -1,6 +1,6 @@
 <template>
   <div :class="isDarkMode ? 'dark' : ''" ref="site" class="w-full h-full">
-    <main class="dark:bg-slate-950 dark:text-slate-400 bg-slate-400 text-slate-950 w-full h-full p-10">
+    <main class="dark:bg-zinc-950 dark:text-zinc-400 bg-zinc-400 text-zinc-950 w-full h-full p-10">
       <Nav />
       <Heading />
       <Body />

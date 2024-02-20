@@ -1,6 +1,5 @@
 <template>
-    <div>
-    </div>
+    <h1 class="text-3xl w-full text-center my-8">Mexico Budgeting</h1>
 </template>
 
 <script>
