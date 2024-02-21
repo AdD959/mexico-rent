@@ -1,10 +1,10 @@
 <template>
   <div :class="isDarkMode ? 'dark' : ''" ref="site" class="w-full h-full absolute">
     <main class="flex flex-col items-end dark:text-zinc-400 bg-zinc-200 dark:bg-zinc-950 text-zinc-950 p-10 min-h-full">
-      <Nav />
+      <Nav @removeLocalStorage="removeAndRerender()"/>
       <div class="flex items-center mx-auto flex-col w-full max-w-screen-lg">
         <Heading />
-        <Body />
+        <Body :key="componentKey" />
       </div>
     </main>
   </div>
@@ -15,6 +15,7 @@ import Heading from '@/components/Heading.vue'
 import Body from '@/components/Body.vue'
 import Nav from '@/components/Nav.vue'
 import { computed } from 'vue'
+import { ref } from 'vue'
 export default {
   components: {
     Heading,
@@ -24,6 +25,7 @@ export default {
   data() {
     return {
       isDarkMode: false,
+      componentKey: 0,
     }
   },
   provide() {
@@ -46,6 +48,10 @@ export default {
     toggleDarkMode() {
       this.isDarkMode = !this.isDarkMode
     },
+    removeAndRerender() {
+      localStorage.clear()
+      this.componentKey += 1
+    }
   },
   watch: {
     isDarkMode(newVal) {

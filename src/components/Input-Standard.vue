@@ -17,8 +17,13 @@ export default {
     },
     data() {
         return {
-            inputVal: null
+            inputVal: null,
+            inputStoredVal: null
         }
+    },
+    mounted() {
+        console.log('tets');
+        this.inputVal = JSON.parse(localStorage.getItem(this.data.label)) || null
     },
     computed: {
         processLabel() {
@@ -29,6 +34,7 @@ export default {
     },
     watch: {
         inputVal(newVal) {
+            localStorage.setItem(this.data.label, newVal)
         }
     }
 };
