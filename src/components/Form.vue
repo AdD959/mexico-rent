@@ -1,5 +1,5 @@
 <template>
-    <form class="inline-grid grid-cols-2 gap-4" action="">
+    <form class="w-full sm:min-w-[300px] inline-grid grid-cols-[repeat(auto-fit,minmax(200px,_1fr))] gap-4" action="">
         <InputStandard :data="income1" />
         <InputStandard :data="income2" />
         <InputStandard :data="rent" />

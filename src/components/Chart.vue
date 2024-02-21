@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="flex-1 sm:min-w-[300px] border border-black dark:border-white">
         <!-- Your form content goes here -->
     </div>
 </template>

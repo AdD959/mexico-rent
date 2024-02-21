@@ -1,7 +1,9 @@
 <template>
-    <div>
-        <Form />
+    <div class="flex flex-col sm:flex-row flex-wrap gap-10 w-full">
         <Chart />
+        <div class="flex-1">
+            <Form />
+        </div>
     </div>
 </template>
 

@@ -1,9 +1,11 @@
 <template>
-  <div :class="isDarkMode ? 'dark' : ''" ref="site" class="w-full h-full">
-    <main class="dark:bg-zinc-950 dark:text-zinc-400 bg-zinc-400 text-zinc-950 w-full h-full p-10">
+  <div :class="isDarkMode ? 'dark' : ''" ref="site" class="w-full h-full absolute">
+    <main class="flex flex-col items-end dark:text-zinc-400 bg-zinc-200 dark:bg-zinc-950 text-zinc-950 p-10 min-h-full">
       <Nav />
-      <Heading />
-      <Body />
+      <div class="flex items-center mx-auto flex-col w-full max-w-screen-lg">
+        <Heading />
+        <Body />
+      </div>
     </main>
   </div>
 </template>
