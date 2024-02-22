@@ -21,8 +21,8 @@ export default {
             inputStoredVal: null
         }
     },
+    inject: ['inputChanged'],
     mounted() {
-        console.log('tets');
         this.inputVal = JSON.parse(localStorage.getItem(this.data.label)) || null
     },
     computed: {
@@ -30,11 +30,13 @@ export default {
             let noSpaces = this.data.label.replace(/\s+/g, '')
             let lowerCase = noSpaces.toLowerCase()
             return lowerCase
-        }
+        },
     },
     watch: {
-        inputVal(newVal) {
-            localStorage.setItem(this.data.label, newVal)
+        inputVal(newVal, oldVal) {
+            let oldStoredVal = JSON.parse(localStorage.getItem(this.data.label))
+            newVal === '' ? null : localStorage.setItem(this.data.label, newVal)
+            this.inputChanged(this.inputVal, this.data.index)
         }
     }
 };

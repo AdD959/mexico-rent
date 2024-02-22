@@ -15,7 +15,6 @@ import Heading from '@/components/Heading.vue'
 import Body from '@/components/Body.vue'
 import Nav from '@/components/Nav.vue'
 import { computed } from 'vue'
-import { ref } from 'vue'
 export default {
   components: {
     Heading,
@@ -31,7 +30,7 @@ export default {
   provide() {
     return {
       isDarkMode: computed(() => this.isDarkMode),
-      toggleDarkMode: this.toggleDarkMode
+      toggleDarkMode: this.toggleDarkMode,
     }
   },
   mounted() {
@@ -49,9 +48,11 @@ export default {
       this.isDarkMode = !this.isDarkMode
     },
     removeAndRerender() {
+      const theme = localStorage.isDarkModeTheme
       localStorage.clear()
+      localStorage.isDarkModeTheme = theme
       this.componentKey += 1
-    }
+    },
   },
   watch: {
     isDarkMode(newVal) {
