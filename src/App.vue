@@ -4,7 +4,7 @@
       <Nav @removeLocalStorage="removeAndRerender()"/>
       <div class="flex items-center mx-auto flex-col w-full max-w-screen-lg">
         <Heading />
-        <Body :key="componentKey" />
+        <Body :key="componentKey" :isDarkMode="isDarkMode" />
       </div>
     </main>
   </div>
@@ -33,7 +33,7 @@ export default {
       toggleDarkMode: this.toggleDarkMode,
     }
   },
-  mounted() {
+  created() {
     if (localStorage.isDarkModeTheme === 'true' || (!('isDarkModeTheme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
       this.isDarkMode = true
     } else {

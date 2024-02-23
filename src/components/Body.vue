@@ -1,6 +1,6 @@
 <template>
     <div class="flex flex-col sm:flex-row flex-wrap gap-10 w-full">
-        <Chart :data="data" />
+        <Chart :data="data" :isDarkMode="isDarkMode"/>
         <div class="flex-1">
             <Form :data="data" />
         </div>
@@ -12,6 +12,9 @@ import Form from '@/components/Form.vue';
 import Chart from '@/components/Chart.vue';
 
 export default {
+    props: {
+        isDarkMode: Boolean
+    },
     components: {
         Form,
         Chart
@@ -50,19 +53,19 @@ export default {
                 food: {
                     index: 5,
                     label: 'Food', 
-                    color: 'border-yellow-500',
+                    color: 'border-amber-300',
                     pricing: true,
                 },
                 activities: {
                     index: 6,
                     label: 'Activities', 
-                    color: 'border-green-500',
+                    color: 'border-green-300',
                     pricing: true,
                 },
                 savings: {
                     index: 7,
                     label: 'Savings', 
-                    color: 'border-red-500',
+                    color: 'border-sky-300',
                     pricing: true,
                 },
                 siVale: {
