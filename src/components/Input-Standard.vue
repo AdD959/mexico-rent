@@ -4,7 +4,7 @@
         <div class="relative">
             <input :class="data.color ? data.color : 'border-transparent'"
                 class="border-l-8 text-lg dark:text-zinc-50 bg-zinc-300 dark:bg-zinc-800 p-2 pl-6 outline-none appearance-none w-full"
-                type="number" v-model="inputVal">
+                type="number" v-model="inputVal" @focusin="inputVal = null">
             <span v-show="data.pricing" class="absolute top-1/2 left-3 transform -translate-y-1/2 text-lg pl-1">$</span>
         </div>
     </div>
