@@ -1,8 +1,8 @@
 <template>
   <div :class="isDarkMode ? 'dark' : ''" ref="site" class="w-full h-full absolute">
     <main class="flex flex-col items-end dark:text-zinc-400 bg-zinc-200 dark:bg-zinc-950 text-zinc-950 p-10 min-h-full">
-      <Nav @removeLocalStorage="removeAndRerender()"/>
-      <div class="flex flex-1 -mt-[72px] justify-center items-center mx-auto flex-col w-full max-w-screen-lg">
+      <Nav @removeLocalStorage="removeAndRerender()" />
+      <div class="flex flex-1 justify-center items-center mx-auto flex-col w-full max-w-screen-lg">
         <Heading />
         <Body :key="componentKey" :isDarkMode="isDarkMode" />
       </div>
@@ -25,6 +25,7 @@ export default {
     return {
       isDarkMode: false,
       componentKey: 0,
+      html: document.querySelector('html')
     }
   },
   provide() {
@@ -35,17 +36,24 @@ export default {
   },
   created() {
     if (localStorage.isDarkModeTheme === 'true' || (!('isDarkModeTheme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-      this.isDarkMode = true
+      this.setTheme(true)
     } else {
-      this.isDarkMode = false
+      this.setTheme(false)
     }
   },
   methods: {
     setTheme(theme) {
       this.isDarkMode = theme
+      if (this.isDarkMode) {
+        this.html.classList.remove('bg-zinc-200')
+        this.html.classList.add('bg-zinc-950')
+      } else {
+        this.html.classList.remove('bg-zinc-950')
+        this.html.classList.add('bg-zinc-200')
+      }
     },
     toggleDarkMode() {
-      this.isDarkMode = !this.isDarkMode
+      this.setTheme(!this.isDarkMode)
     },
     removeAndRerender() {
       const theme = localStorage.isDarkModeTheme
