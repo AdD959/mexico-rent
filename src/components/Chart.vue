@@ -14,8 +14,8 @@ export default {
     data() {
         return {
             backgroundColorsTheme: {
-                light: ["#71717a","#a1a1aa", "#d4d4d8", "#eab308", "#22c55e", "#0ea5e9"],
-                dark: ["#18181b", "#27272a", "#52525b", "#eab308", "#22c55e", "#0ea5e9"]
+                light: ["#71717a","#a1a1aa", "#d4d4d8", "#eab308", "#fde047", "#22c55e", "#0ea5e9", "#ef4444"],
+                dark: ["#18181b", "#27272a", "#52525b", "#eab308", "#fde047", "#22c55e", "#0ea5e9", "#ef4444"]
             },
             borderColorsTheme: {
                 light: '#52525b',
@@ -51,9 +51,9 @@ export default {
     },
     created() {
         this.chartData = {
-            labels: ['Rent', 'Bills', 'Tax', 'Food', 'Activities', 'Savings'],
+            labels: ['Rent', 'Bills', 'Tax', 'Food', 'Si Vale', 'Activities', 'Savings', 'Overspend'],
             datasets: [{
-                data: [this.data.rent.value, this.data.bills.value, this.data.tax.value, this.data.food.value, this.data.activities.value, this.data.savings.value],
+                data: [this.data.rent.value, this.data.bills.value, this.data.tax.value, this.data.food.value, this.data.siVale.value, this.data.activities.value, this.data.savings.value],
                 backgroundColor: this.isDarkMode ? this.backgroundColorsTheme.dark : this.backgroundColorsTheme.light,
                 borderColor: this.isDarkMode ? this.borderColorsTheme.dark : this.borderColorsTheme.light,
                 hoverOffset: 4
@@ -71,7 +71,7 @@ export default {
     watch: {
         data: {
             handler() {
-                this.myChart.data.datasets[0].data = [this.data.rent.value, this.data.bills.value, this.data.tax.value, this.data.food.value, this.data.activities.value, this.data.savings.value]
+                this.myChart.data.datasets[0].data = [this.data.rent.value, this.data.bills.value, this.data.tax.value, this.data.food.value, this.data.siVale.value, this.data.activities.value, this.data.savings.value]
                 this.myChart.update()
             },
             deep: true

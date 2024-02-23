@@ -21,7 +21,13 @@ export default {
     },
     computed: {
         totalIncome() {
-            return this.data.income1.value + this.data.income2.value
+            return this.data.income1.value + this.data.income2.value || 0
+        },
+        totalExpenses() {
+            return this.rent + this.tax + this.bills + this.food + this.eats
+        },
+        totalSavings() {
+            return Math.round(this.totalIncome - this.totalExpenses)
         }
     },
     data() {
@@ -61,23 +67,23 @@ export default {
                     color: 'border-amber-300',
                     pricing: true,
                 },
-                activities: {
+                siVale: {
                     index: 6,
+                    label: 'Si Vale',
+                    color: 'border-yellow-300',
+                    pricing: false,
+                },
+                activities: {
+                    index: 7,
                     label: 'Activities',
                     color: 'border-green-300',
                     pricing: true,
                 },
                 savings: {
-                    index: 7,
+                    index: 8,
                     label: 'Savings',
                     color: 'border-sky-300',
                     pricing: true,
-                },
-                siVale: {
-                    index: 8,
-                    label: 'Si Vale',
-                    color: 'border-white',
-                    pricing: false,
                 },
             }
         }
