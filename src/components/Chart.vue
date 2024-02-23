@@ -1,5 +1,5 @@
 <template>
-    <div class="flex-1 sm:min-w-[300px]">
+    <div class="flex-1 sm:min-w-[300px]]">
         <canvas ref="myChart"></canvas>
     </div>
 </template>

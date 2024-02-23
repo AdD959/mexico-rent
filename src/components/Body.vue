@@ -1,7 +1,7 @@
 <template>
     <div class="flex flex-col sm:flex-row flex-wrap gap-10 w-full">
         <Chart :data="data" :isDarkMode="isDarkMode"/>
-        <div class="flex-1">
+        <div>
             <Form :data="data" />
         </div>
     </div>

@@ -2,7 +2,7 @@
   <div :class="isDarkMode ? 'dark' : ''" ref="site" class="w-full h-full absolute">
     <main class="flex flex-col items-end dark:text-zinc-400 bg-zinc-200 dark:bg-zinc-950 text-zinc-950 p-10 min-h-full">
       <Nav @removeLocalStorage="removeAndRerender()"/>
-      <div class="flex items-center mx-auto flex-col w-full max-w-screen-lg">
+      <div class="flex flex-1 -mt-[72px] justify-center items-center mx-auto flex-col w-full max-w-screen-lg">
         <Heading />
         <Body :key="componentKey" :isDarkMode="isDarkMode" />
       </div>
