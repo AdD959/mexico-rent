@@ -1,7 +1,9 @@
 <template>
-    <div class="flex flex-col md:flex-row gap-10 w-full">
-        <Chart :data="data" :isDarkMode="isDarkMode" />
-        <Form :data="data" />
+    <div>
+        <div class="flex flex-col md:flex-row gap-10 w-full">
+            <Chart :data="data" :isDarkMode="isDarkMode" />
+            <Form :data="data" :totalIncome="totalIncome" />
+        </div>
     </div>
 </template>
 
@@ -16,6 +18,11 @@ export default {
     components: {
         Form,
         Chart
+    },
+    computed: {
+        totalIncome() {
+            return this.data.income1.value + this.data.income2.value
+        }
     },
     data() {
         return {
@@ -70,7 +77,7 @@ export default {
                     index: 8,
                     label: 'Si Vale',
                     color: 'border-white',
-                    pricing: true,
+                    pricing: false,
                 },
             }
         }
