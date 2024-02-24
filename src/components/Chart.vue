@@ -9,7 +9,10 @@ import Chart from 'chart.js/auto';
 export default {
     props: {
         data: Object,
-        isDarkMode: Boolean
+        isDarkMode: Boolean,
+        siVale: Number,
+        totalSavings: Number,
+        totalDeficit: Number
     },
     data() {
         return {
@@ -19,7 +22,7 @@ export default {
             },
             borderColorsTheme: {
                 light: '#52525b',
-                dark: 'black',
+                dark: '#18181b',
             },
             chartData: null,
             chartOptions: {
@@ -53,7 +56,7 @@ export default {
         this.chartData = {
             labels: ['Rent', 'Bills', 'Tax', 'Food', 'Si Vale', 'Activities', 'Savings', 'Overspend'],
             datasets: [{
-                data: [this.data.rent.value, this.data.bills.value, this.data.tax.value, this.data.food.value, this.data.siVale.value, this.data.activities.value, this.data.savings.value],
+                data: [this.data.rent.value, this.data.bills.value, this.data.tax.value, this.foodValue, this.siVale, this.data.activities.value, this.totalSavings, this.totalDeficit],
                 backgroundColor: this.isDarkMode ? this.backgroundColorsTheme.dark : this.backgroundColorsTheme.light,
                 borderColor: this.isDarkMode ? this.borderColorsTheme.dark : this.borderColorsTheme.light,
                 hoverOffset: 4
@@ -68,10 +71,15 @@ export default {
             options: this.chartOptions
         });
     },
+    computed: {
+        foodValue() {
+            return this.data.food.value - this.siVale < 0 ? 0 : this.data.food.value - this.siVale
+        }
+    },
     watch: {
         data: {
             handler() {
-                this.myChart.data.datasets[0].data = [this.data.rent.value, this.data.bills.value, this.data.tax.value, this.data.food.value, this.data.siVale.value, this.data.activities.value, this.data.savings.value]
+                this.myChart.data.datasets[0].data = [this.data.rent.value, this.data.bills.value, this.data.tax.value, this.foodValue, this.siVale, this.data.activities.value, this.totalSavings, this.totalDeficit]
                 this.myChart.update()
             },
             deep: true

@@ -10,7 +10,7 @@
             <InputStandard :data="data.food" />
             <InputStandard :data="data.siVale" />
             <InputStandard :data="data.activities" />
-            <InputStandard :data="data.savings" />
+            <InputStandard :data="data.savings" :readonly="true" :value="totalSavings" :color="color" />
             <InputCurrency />
         </form>
     </div>
@@ -22,11 +22,18 @@ import InputCurrency from '@/components/Input-Currency.vue'
 export default {
     props: {
         data: Object,
-        totalIncome: Number
+        totalIncome: Number,
+        totalSavings: Number,
+        totalDeficit: Number,
     },
     components: {
         InputStandard,
         InputCurrency
     },
-};
+    computed: {
+        color() {
+            return this.totalSavings > 0 ? 'border-sky-500' : 'border-red-500'
+        }
+    }
+}
 </script>

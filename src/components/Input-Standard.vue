@@ -2,28 +2,38 @@
     <div>
         <label class="text-zinc-800 dark:text-zinc-400" :for="processLabel">{{ data.label }}</label>
         <div class="relative">
-            <input :class="data.color ? data.color : 'border-transparent'"
-                class="border-l-8 text-lg dark:text-zinc-50 bg-zinc-300 dark:bg-zinc-800 p-2 pl-6 outline-none appearance-none w-full"
-                type="number" v-model="inputVal" @focusin="inputVal = null">
+            <input :class="this.borderColor, readonly ? 'text-zinc-600 bg-zinc-400 dark:text-zinc-500 dark:bg-zinc-900 cursor-default' : 'dark:text-zinc-100 bg-zinc-300 dark:bg-zinc-800'" :readonly="readonly || false"
+                class="border-l-8 text-lg p-2 pl-6 outline-none appearance-none w-full"
+                type="number" v-model="inputVal">
             <span v-show="data.pricing" class="absolute top-1/2 left-3 transform -translate-y-1/2 text-lg pl-1">$</span>
         </div>
     </div>
 </template>
 
 <script>
+import { readonly } from 'vue';
+
 export default {
     props: {
         data: Object,
+        readonly: Boolean,
+        value: Number,
+        color: String,
     },
     data() {
         return {
-            inputVal: null,
-            inputStoredVal: null
+            inputVal: this.value || 0,
+            inputStoredVal: 0,
+            borderColor: this.color || this.data.color || 'border-transparent'
         }
     },
     inject: ['inputChanged'],
     mounted() {
-        this.inputVal = JSON.parse(localStorage.getItem(this.data.label)) || null
+        this.inputVal = JSON.parse(localStorage.getItem(this.data.label)) || 0
+    },
+    updated() {
+        this.borderColor = this.color || this.data.color || 'border-transparent'
+        if (this.readonly) { this.inputVal = this.value || 0 }
     },
     computed: {
         processLabel() {
@@ -35,7 +45,7 @@ export default {
     watch: {
         inputVal(newVal, oldVal) {
             let oldStoredVal = JSON.parse(localStorage.getItem(this.data.label))
-            newVal === '' ? null : localStorage.setItem(this.data.label, newVal)
+            newVal === '' ? 0 : localStorage.setItem(this.data.label, newVal)
             this.inputChanged(this.inputVal, this.data.index)
         }
     }
