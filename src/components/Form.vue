@@ -6,7 +6,7 @@
             <InputStandard :data="data.income2" />
             <InputStandard :data="data.rent" />
             <InputStandard :data="data.bills" />
-            <InputStandard :data="data.tax" />
+            <InputStandard :data="data.tax" :readonly="true" :value="totalTax" />
             <InputStandard :data="data.food" />
             <InputStandard :data="data.siVale" />
             <InputStandard :data="data.activities" />
@@ -25,6 +25,7 @@ export default {
         totalIncome: Number,
         totalSavings: Number,
         totalDeficit: Number,
+        totalTax: Number
     },
     components: {
         InputStandard,

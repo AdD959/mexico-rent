@@ -12,12 +12,13 @@ export default {
         isDarkMode: Boolean,
         siVale: Number,
         totalSavings: Number,
-        totalDeficit: Number
+        totalDeficit: Number,
+        totalIncome: Number,
     },
     data() {
         return {
             backgroundColorsTheme: {
-                light: ["#71717a","#a1a1aa", "#d4d4d8", "#eab308", "#fde047", "#22c55e", "#0ea5e9", "#ef4444"],
+                light: ["#71717a", "#a1a1aa", "#d4d4d8", "#eab308", "#fde047", "#22c55e", "#0ea5e9", "#ef4444"],
                 dark: ["#18181b", "#27272a", "#52525b", "#eab308", "#fde047", "#22c55e", "#0ea5e9", "#ef4444"]
             },
             borderColorsTheme: {
@@ -94,7 +95,7 @@ export default {
 
             }
             this.myChart.update()
-        }
+        },
     },
 };
 </script>

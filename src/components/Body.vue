@@ -1,8 +1,9 @@
 <template>
     <div>
         <div class="flex flex-col md:flex-row gap-10 w-full">
-            <Chart :data="data" :isDarkMode="isDarkMode" :siVale="siValeValue" :totalSavings="totalSavings" :totalDeficit="totalDeficit"/>
-            <Form :data="data" :totalIncome="totalIncome" :totalSavings="totalSavings" :totalDeficit="totalDeficit"/>
+            <Chart :data="data" :isDarkMode="isDarkMode" :siVale="siValeValue" :totalSavings="totalSavings"
+                :totalIncome="totalIncome" :totalDeficit="totalDeficit" :totalTax="totalTax"/>
+            <Form :data="data" :totalIncome="totalIncome" :totalSavings="totalSavings" :totalDeficit="totalDeficit" :totalTax="totalTax"/>
         </div>
     </div>
 </template>
@@ -30,14 +31,23 @@ export default {
             return Math.round(this.totalIncome - this.totalExpenses) < 0 ? 0 : Math.round(this.totalIncome - this.totalExpenses)
         },
         totalDeficit() {
-            return Math.round(this.totalIncome - this.totalExpenses) < 0 ?  Math.round(this.totalIncome - this.totalExpenses) : 0
+            return Math.round(this.totalIncome - this.totalExpenses) < 0 ? Math.round(this.totalIncome - this.totalExpenses) : 0
         },
         siValeValue() {
             return Math.round(this.data.siVale.value * 4250)
-        }
+        },
+        totalTax() {
+            return Math.round(this.findThresholdIndex(this.data.income1.value) + this.findThresholdIndex(this.data.income2.value));
+        },
     },
     data() {
         return {
+            tax: {
+                lower_threshold: [0.01, 746.05, 6332.06, 11128.02, 12935.83, 15487.72, 31236.50, 49233.01, 93993.91, 125325.21, 375975.62],
+                upper_threshold: [746.04, 6332.05, 11128.01, 12935.82, 15487.71, 31236.49, 49233.00, 93993.90, 125325.20, 375975.61, 9999999999],
+                fixed_fee: [0.00, 14.32, 371.83, 893.63, 1182.88, 1640.18, 5004.12, 9236.89, 22665.17, 32691.18, 117912.32],
+                exceedance: [1.92, 6.40, 10.88, 16.00, 17.92, 21.36, 23.52, 30.00, 32.00, 34.00, 35.00],
+            },
             data: {
                 income1: {
                     index: 0,
@@ -112,6 +122,16 @@ export default {
         inputChanged(newVal, index) {
             typeof newVal === "string" ? newVal = 0 : newVal = newVal
             this.data[Object.keys(this.data)[index]].value = newVal
+        },
+        findThresholdIndex(num) {
+            for (let i = 0; i < this.tax.lower_threshold.length; i++) {
+                if ((num >= this.tax.lower_threshold[i] && num < this.tax.upper_threshold[i]) ||
+                    (num >= this.tax.lower_threshold[i] && !this.tax.upper_threshold[i + 1])) {
+                    const totalTax = this.tax.fixed_fee[i] + (this.tax.exceedance[i] * (num - this.tax.lower_threshold[i]) / 100);
+                    return totalTax
+                }
+            }
+            return -1;
         }
     }
 }
