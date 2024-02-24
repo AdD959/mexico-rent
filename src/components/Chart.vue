@@ -14,12 +14,13 @@ export default {
         totalSavings: Number,
         totalDeficit: Number,
         totalIncome: Number,
+        totalCompanySavings: Number,
     },
     data() {
         return {
             backgroundColorsTheme: {
-                light: ["#71717a", "#a1a1aa", "#d4d4d8", "#eab308", "#fde047", "#22c55e", "#0ea5e9", "#ef4444"],
-                dark: ["#18181b", "#27272a", "#52525b", "#eab308", "#fde047", "#22c55e", "#0ea5e9", "#ef4444"]
+                light: ["#71717a", "#a1a1aa", "#d4d4d8", "#eab308", "#fde047", "#22c55e", "#0ea5e9", "#ef4444", '#0ea5e9'],
+                dark: ["#18181b", "#27272a", "#52525b", "#eab308", "#fde047", "#22c55e", "#0ea5e9", "#ef4444", '#0ea5e9']
             },
             borderColorsTheme: {
                 light: '#52525b',
@@ -55,9 +56,9 @@ export default {
     },
     created() {
         this.chartData = {
-            labels: ['Rent', 'Bills', 'Tax', 'Food', 'Si Vale', 'Activities', 'Savings', 'Overspend'],
+            labels: ['Rent', 'Bills', 'Tax', 'Food', 'Si Vale', 'Activities', 'Savings', 'Overspend','Company Savings'],
             datasets: [{
-                data: [this.data.rent.value, this.data.bills.value, this.data.tax.value, this.foodValue, this.siVale, this.data.activities.value, this.totalSavings, this.totalDeficit],
+                data: [this.data.rent.value, this.data.bills.value, this.data.tax.value, this.foodValue, this.siVale, this.data.activities.value, this.totalSavings, this.totalDeficit, this.totalCompanySavings],
                 backgroundColor: this.isDarkMode ? this.backgroundColorsTheme.dark : this.backgroundColorsTheme.light,
                 borderColor: this.isDarkMode ? this.borderColorsTheme.dark : this.borderColorsTheme.light,
                 hoverOffset: 4
@@ -80,7 +81,7 @@ export default {
     watch: {
         data: {
             handler() {
-                this.myChart.data.datasets[0].data = [this.data.rent.value, this.data.bills.value, this.data.tax.value, this.foodValue, this.siVale, this.data.activities.value, this.totalSavings, this.totalDeficit]
+                this.myChart.data.datasets[0].data = [this.data.rent.value, this.data.bills.value, this.data.tax.value, this.foodValue, this.siVale, this.data.activities.value, this.totalSavings, this.totalDeficit, this.totalCompanySavings]
                 this.myChart.update()
             },
             deep: true
@@ -94,6 +95,10 @@ export default {
                 this.myChart.data.datasets[0].borderColor = this.borderColorsTheme.light
 
             }
+            this.myChart.update()
+        },
+        totalCompanySavings() {
+            this.myChart.data.datasets[0].data[8] = this.totalCompanySavings
             this.myChart.update()
         },
     },

@@ -2,8 +2,9 @@
     <div>
         <div class="flex flex-col md:flex-row gap-10 w-full">
             <Chart :data="data" :isDarkMode="isDarkMode" :siVale="siValeValue" :totalSavings="totalSavings"
-                :totalIncome="totalIncome" :totalDeficit="totalDeficit" :totalTax="totalTax"/>
-            <Form :data="data" :totalIncome="totalIncome" :totalSavings="totalSavings" :totalDeficit="totalDeficit" :totalTax="totalTax"/>
+                :totalIncome="totalIncome" :totalDeficit="totalDeficit" :totalTax="totalTax" :totalCompanySavings="totalCompanySavings" />
+            <Form :data="data" :totalIncome="totalIncome" :totalSavings="totalSavings" :totalDeficit="totalDeficit"
+                :totalTax="totalTax" />
         </div>
     </div>
 </template>
@@ -22,7 +23,7 @@ export default {
     },
     computed: {
         totalIncome() {
-            return this.data.income1.value + this.data.income2.value || 0
+            return (this.data.income1.value + this.data.income2.value) - this.totalCompanySavings || 0
         },
         totalExpenses() {
             return this.data.rent.value + this.data.tax.value + this.data.bills.value + this.data.food.value + this.data.activities.value
@@ -39,9 +40,14 @@ export default {
         totalTax() {
             return Math.round(this.findThresholdIndex(this.data.income1.value) + this.findThresholdIndex(this.data.income2.value));
         },
+        totalCompanySavings() {
+            return Math.round(this.companySavings1 + this.companySavings2)
+        }
     },
     data() {
         return {
+            companySavings1: 0,
+            companySavings2: 0,
             tax: {
                 lower_threshold: [0.01, 746.05, 6332.06, 11128.02, 12935.83, 15487.72, 31236.50, 49233.01, 93993.91, 125325.21, 375975.62],
                 upper_threshold: [746.04, 6332.05, 11128.01, 12935.82, 15487.71, 31236.49, 49233.00, 93993.90, 125325.20, 375975.61, 9999999999],
@@ -116,12 +122,20 @@ export default {
     provide() {
         return {
             inputChanged: this.inputChanged,
+            savingsChanged: this.savingsChanged
         }
     },
     methods: {
         inputChanged(newVal, index) {
             typeof newVal === "string" ? newVal = 0 : newVal = newVal
             this.data[Object.keys(this.data)[index]].value = newVal
+        },
+        savingsChanged(val, savings, income2) {
+            if (income2) {
+                this.companySavings2 = savings ? this.data.income2.value * 0.13 : 0
+            } else {
+                this.companySavings1 = savings ? this.data.income1.value * 0.13 : 0
+            }
         },
         findThresholdIndex(num) {
             for (let i = 0; i < this.tax.lower_threshold.length; i++) {

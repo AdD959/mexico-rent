@@ -2,14 +2,14 @@
     <div class="flex-1">
         <h2 class="text-center mb-4 under">Total Income: {{ totalIncome }}</h2>
         <form class="w-full sm:min-w-[300px] inline-grid grid-cols-[repeat(auto-fit,minmax(180px,_1fr))] gap-4" action="">
-            <InputStandard :data="data.income1" />
-            <InputStandard :data="data.income2" />
+            <InputStandard :data="data.income1" :checkbox="true" checkboxLabel="Savings" />
+            <InputStandard :data="data.income2" :checkbox="true" checkboxLabel="Savings" />
             <InputStandard :data="data.rent" />
             <InputStandard :data="data.bills" />
-            <InputStandard :data="data.tax" :readonly="true" :value="totalTax" />
             <InputStandard :data="data.food" />
             <InputStandard :data="data.siVale" />
             <InputStandard :data="data.activities" />
+            <InputStandard :data="data.tax" :readonly="true" :value="totalTax" />
             <InputStandard :data="data.savings" :readonly="true" :value="totalSavings" :color="color" />
             <InputCurrency />
         </form>
@@ -35,6 +35,6 @@ export default {
         color() {
             return this.totalSavings > 0 ? 'border-sky-500' : 'border-red-500'
         }
-    }
+    },
 }
 </script>
