@@ -20,8 +20,8 @@ export default {
     data() {
         return {
             backgroundColorsTheme: {
-                light: ["#71717a", "#a1a1aa", "#d4d4d8", "#eab308", "#fde047", "#22c55e", "#0ea5e9", "#ef4444", '#0ea5e9'],
-                dark: ["#18181b", "#27272a", "#52525b", "#eab308", "#fde047", "#22c55e", "#0ea5e9", "#ef4444", '#0ea5e9']
+                light: ["#71717a", "#a1a1aa", "#d4d4d8", "#eab308", "#fde047", "#22c55e", "#0ea5e9", "#ef4444", '#7dd3fc'],
+                dark: ["#18181b", "#27272a", "#52525b", "#eab308", "#fde047", "#22c55e", "#0ea5e9", "#ef4444", '#7dd3fc']
             },
             borderColorsTheme: {
                 light: '#52525b',
