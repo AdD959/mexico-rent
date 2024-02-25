@@ -2,15 +2,18 @@
     <div class="flex-1">
         <h2 class="text-center mb-4 under">Total Income: {{ totalIncome }}</h2>
         <form class="w-full sm:min-w-[300px] inline-grid grid-cols-[repeat(auto-fit,minmax(180px,_1fr))] gap-4" action="">
-            <InputStandard :data="data.income1" :checkbox="true" checkboxLabel="Savings" />
-            <InputStandard :data="data.income2" :checkbox="true" checkboxLabel="Savings" />
-            <InputStandard :data="data.rent" />
+            <InputStandard :data="data.income1" :checkbox="true" checkboxLabel="13% Company Savings" />
+            <InputStandard :data="data.income2" :checkbox="true" checkboxLabel="13% Company Savings" />
+            <div class="relative">
+                <InputStandard :data="data.rent" :checkboxLabel="`% of income`"/>
+                <div class="absolute right-0 top-1/2 pr-2 text-zinc-600 dark:text-zinc-500">{{ Math.round(data.rent.value / totalIncome * 100) }}%</div>
+            </div>
             <InputStandard :data="data.bills" />
             <div class="relative">
-                <InputStandard :data="data.food" />
-                <div class="absolute right-0 top-1/2 pr-2 text-zinc-600 dark:text-zinc-500">({{ siValeRemainder }})</div>
+                <InputStandard :data="data.food" checkboxLabel="Actual Spends"/>
+                <div class="absolute right-0 top-1/2 pr-2 text-zinc-600 dark:text-zinc-500">(${{ siValeRemainder }})</div>
             </div>
-            <InputStandard :data="data.siVale" />
+            <InputStandard :data="data.siVale" :checkboxLabel="`$${siValeValue} discount`" />
             <InputStandard :data="data.activities" />
             <InputStandard :data="data.tax" :readonly="true" :value="totalTax" />
             <InputStandard :data="data.savings" :readonly="true" :value="totalSavings" :color="color" />
@@ -30,6 +33,7 @@ export default {
         totalDeficit: Number,
         totalTax: Number,
         siValeRemainder: Number,
+        siValeValue: Number,
     },
     components: {
         InputStandard,
