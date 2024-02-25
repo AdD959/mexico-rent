@@ -1,7 +1,7 @@
 <template>
     <div class="relative">
         <label class="text-zinc-800 dark:text-zinc-400" :for="processLabel">{{ data.label }}</label>
-        <label v-show="checkbox" class="text-zinc-800 dark:text-zinc-400 absolute right-0 text-xs"
+        <label class="text-zinc-800 dark:text-zinc-400 absolute right-0 text-xs"
             :for="`${data.label}-checkbox`">{{ checkboxLabel }}</label>
         <div class="relative flex items-center">
             <input

@@ -15,12 +15,13 @@ export default {
         totalDeficit: Number,
         totalIncome: Number,
         totalCompanySavings: Number,
+        totalFood: Number
     },
     data() {
         return {
             backgroundColorsTheme: {
-                light: ["#71717a", "#a1a1aa", "#d4d4d8", "#eab308", "#fde047", "#22c55e", "#0ea5e9", "#ef4444", '#0ea5e9'],
-                dark: ["#18181b", "#27272a", "#52525b", "#eab308", "#fde047", "#22c55e", "#0ea5e9", "#ef4444", '#0ea5e9']
+                light: ["#71717a", "#a1a1aa", "#d4d4d8", "#eab308", "#fde047", "#22c55e", "#0ea5e9", "#ef4444", '#7dd3fc'],
+                dark: ["#18181b", "#27272a", "#52525b", "#eab308", "#fde047", "#22c55e", "#0ea5e9", "#ef4444", '#7dd3fc']
             },
             borderColorsTheme: {
                 light: '#52525b',
@@ -58,7 +59,7 @@ export default {
         this.chartData = {
             labels: ['Rent', 'Bills', 'Tax', 'Food', 'Si Vale', 'Activities', 'Savings', 'Overspend','Company Savings'],
             datasets: [{
-                data: [this.data.rent.value, this.data.bills.value, this.data.tax.value, this.foodValue, this.siVale, this.data.activities.value, this.totalSavings, this.totalDeficit, this.totalCompanySavings],
+                data: [this.data.rent.value, this.data.bills.value, this.data.tax.value, this.totalFood, this.siVale, this.data.activities.value, this.totalSavings, this.totalDeficit, this.totalCompanySavings],
                 backgroundColor: this.isDarkMode ? this.backgroundColorsTheme.dark : this.backgroundColorsTheme.light,
                 borderColor: this.isDarkMode ? this.borderColorsTheme.dark : this.borderColorsTheme.light,
                 hoverOffset: 4
@@ -73,15 +74,10 @@ export default {
             options: this.chartOptions
         });
     },
-    computed: {
-        foodValue() {
-            return this.data.food.value - this.siVale < 0 ? 0 : this.data.food.value - this.siVale
-        }
-    },
     watch: {
         data: {
             handler() {
-                this.myChart.data.datasets[0].data = [this.data.rent.value, this.data.bills.value, this.data.tax.value, this.foodValue, this.siVale, this.data.activities.value, this.totalSavings, this.totalDeficit, this.totalCompanySavings]
+                this.myChart.data.datasets[0].data = [this.data.rent.value, this.data.bills.value, this.data.tax.value, this.totalFood, this.siVale, this.data.activities.value, this.totalSavings, this.totalDeficit, this.totalCompanySavings]
                 this.myChart.update()
             },
             deep: true
