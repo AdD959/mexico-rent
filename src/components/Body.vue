@@ -2,9 +2,9 @@
     <div>
         <div class="flex flex-col md:flex-row gap-10 w-full">
             <Chart :data="data" :isDarkMode="isDarkMode" :siVale="siValeValue" :totalSavings="totalSavings"
-                :totalIncome="totalIncome" :totalDeficit="totalDeficit" :totalTax="totalTax" :totalCompanySavings="totalCompanySavings" />
+                :totalIncome="totalIncome" :totalDeficit="totalDeficit" :totalTax="totalTax" :totalCompanySavings="totalCompanySavings" :totalFood="totalFood"/>
             <Form :data="data" :totalIncome="totalIncome" :totalSavings="totalSavings" :totalDeficit="totalDeficit"
-                :totalTax="totalTax" />
+                :totalTax="totalTax" :totalFood="totalFood" />
         </div>
     </div>
 </template>
@@ -29,19 +29,25 @@ export default {
             return this.data.rent.value + this.data.tax.value + this.data.bills.value + this.data.food.value + this.data.activities.value
         },
         totalSavings() {
-            return Math.round(this.totalIncome - this.totalExpenses) < 0 ? 0 : Math.round(this.totalIncome - this.totalExpenses)
+            return Math.round(this.totalIncome - this.totalExpenses) < 0 ? 0 : Math.round(this.totalIncome - this.totalExpenses) + this.foodToSavings
         },
         totalDeficit() {
             return Math.round(this.totalIncome - this.totalExpenses) < 0 ? Math.round(this.totalIncome - this.totalExpenses) : 0
         },
         siValeValue() {
-            return Math.round(this.data.siVale.value * 4250)
+            return Math.round(this.data.siVale.value * 4307.68)
         },
         totalTax() {
             return Math.round(this.findThresholdIndex(this.data.income1.value) + this.findThresholdIndex(this.data.income2.value));
         },
         totalCompanySavings() {
             return Math.round(this.companySavings1 + this.companySavings2)
+        },
+        totalFood() {
+            return Math.round(this.data.food.value - this.siValeValue < 0 ? 0 : this.data.food.value - this.siValeValue)
+        },
+        foodToSavings() {
+            return this.data.food.value - this.totalFood
         }
     },
     data() {

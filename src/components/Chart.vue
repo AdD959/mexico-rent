@@ -15,6 +15,7 @@ export default {
         totalDeficit: Number,
         totalIncome: Number,
         totalCompanySavings: Number,
+        totalFood: Number
     },
     data() {
         return {
@@ -58,7 +59,7 @@ export default {
         this.chartData = {
             labels: ['Rent', 'Bills', 'Tax', 'Food', 'Si Vale', 'Activities', 'Savings', 'Overspend','Company Savings'],
             datasets: [{
-                data: [this.data.rent.value, this.data.bills.value, this.data.tax.value, this.foodValue, this.siVale, this.data.activities.value, this.totalSavings, this.totalDeficit, this.totalCompanySavings],
+                data: [this.data.rent.value, this.data.bills.value, this.data.tax.value, this.totalFood, this.siVale, this.data.activities.value, this.totalSavings, this.totalDeficit, this.totalCompanySavings],
                 backgroundColor: this.isDarkMode ? this.backgroundColorsTheme.dark : this.backgroundColorsTheme.light,
                 borderColor: this.isDarkMode ? this.borderColorsTheme.dark : this.borderColorsTheme.light,
                 hoverOffset: 4
@@ -73,15 +74,10 @@ export default {
             options: this.chartOptions
         });
     },
-    computed: {
-        foodValue() {
-            return this.data.food.value - this.siVale < 0 ? 0 : this.data.food.value - this.siVale
-        }
-    },
     watch: {
         data: {
             handler() {
-                this.myChart.data.datasets[0].data = [this.data.rent.value, this.data.bills.value, this.data.tax.value, this.foodValue, this.siVale, this.data.activities.value, this.totalSavings, this.totalDeficit, this.totalCompanySavings]
+                this.myChart.data.datasets[0].data = [this.data.rent.value, this.data.bills.value, this.data.tax.value, this.totalFood, this.siVale, this.data.activities.value, this.totalSavings, this.totalDeficit, this.totalCompanySavings]
                 this.myChart.update()
             },
             deep: true

@@ -25,7 +25,7 @@ export default {
         totalIncome: Number,
         totalSavings: Number,
         totalDeficit: Number,
-        totalTax: Number
+        totalTax: Number,
     },
     components: {
         InputStandard,
