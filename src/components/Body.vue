@@ -4,7 +4,7 @@
             <Chart :data="data" :isDarkMode="isDarkMode" :siVale="siValeValue" :totalSavings="totalSavings"
                 :totalIncome="totalIncome" :totalDeficit="totalDeficit" :totalTax="totalTax" :totalCompanySavings="totalCompanySavings" :totalFood="totalFood"/>
             <Form :data="data" :totalIncome="totalIncome" :totalSavings="totalSavings" :totalDeficit="totalDeficit"
-                :totalTax="totalTax" :totalFood="totalFood" :siValeRemainder="siValeRemainder" :siValeValue="siValeValue" />
+                :totalTax="totalTax" :totalFood="totalFood" :siValeRemainder="siValeRemainder" :siValeValue="siValeValue" :totalCompanySavings="totalCompanySavings"/>
         </div>
     </div>
 </template>
