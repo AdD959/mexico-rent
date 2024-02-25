@@ -2,9 +2,11 @@
     <div>
         <div class="flex flex-col md:flex-row gap-10 w-full">
             <Chart :data="data" :isDarkMode="isDarkMode" :siVale="siValeValue" :totalSavings="totalSavings"
-                :totalIncome="totalIncome" :totalDeficit="totalDeficit" :totalTax="totalTax" :totalCompanySavings="totalCompanySavings" :totalFood="totalFood"/>
+                :totalIncome="totalIncome" :totalDeficit="totalDeficit" :totalTax="totalTax"
+                :totalCompanySavings="totalCompanySavings" :totalFood="totalFood" />
             <Form :data="data" :totalIncome="totalIncome" :totalSavings="totalSavings" :totalDeficit="totalDeficit"
-                :totalTax="totalTax" :totalFood="totalFood" :siValeRemainder="siValeRemainder" :siValeValue="siValeValue" :totalCompanySavings="totalCompanySavings"/>
+                :totalTax="totalTax" :totalFood="totalFood" :siValeRemainder="siValeRemainder" :siValeValue="siValeValue"
+                :totalCompanySavings="totalCompanySavings" :totalSavingsActual="totalSavingsActual" />
         </div>
     </div>
 </template>
@@ -15,7 +17,8 @@ import Chart from '@/components/Chart.vue';
 
 export default {
     props: {
-        isDarkMode: Boolean
+        isDarkMode: Boolean,
+        savingsCalc: ''
     },
     components: {
         Form,
@@ -28,11 +31,20 @@ export default {
         totalExpenses() {
             return this.data.rent.value + this.data.tax.value + this.data.bills.value + this.data.food.value + this.data.activities.value
         },
+        totalExpensesMinusRent() {
+            return this.data.tax.value + this.data.bills.value + this.data.food.value + this.data.activities.value
+        },
         totalSavings() {
             return Math.round(this.totalIncome - this.totalExpenses) < 0 ? 0 : Math.round(this.totalIncome - this.totalExpenses)
         },
+        totalSavingsActual() {
+            return Math.round(this.totalIncome - this.totalExpenses)
+        },
         totalDeficit() {
             return Math.round(this.totalIncome - this.totalExpenses) < 0 ? Math.round(this.totalIncome - this.totalExpenses) : 0
+        },
+        savingsRentCalc() {
+            return Math.round(((this.totalIncome - this.totalExpensesMinusRent) - this.savingsCalc) / 1000) * 1000;
         },
         siValeValue() {
             return Math.round(this.data.siVale.value * 4307.68 > this.data.food.value ? this.data.food.value : this.data.siVale.value * 4307.68)
@@ -131,7 +143,7 @@ export default {
     provide() {
         return {
             inputChanged: this.inputChanged,
-            savingsChanged: this.savingsChanged
+            savingsChanged: this.savingsChanged,
         }
     },
     methods: {
@@ -155,7 +167,15 @@ export default {
                 }
             }
             return -1;
-        }
+        },
+    },
+    watch: {
+        savingsCalc(newVal) {
+            this.$emit('rentCalc', this.savingsRentCalc)
+        },
+        totalIncome() {
+            this.$emit('rentCalc', this.savingsRentCalc)
+        },
     }
 }
 </script>

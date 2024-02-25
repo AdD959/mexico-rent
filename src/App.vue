@@ -1,10 +1,10 @@
 <template>
   <div :class="isDarkMode ? 'dark' : ''" ref="site" class="w-full h-full absolute">
     <main class="flex flex-col items-end dark:text-zinc-400 bg-zinc-200 dark:bg-zinc-950 text-zinc-950 p-10 min-h-full">
-      <Nav @removeLocalStorage="removeAndRerender()" />
-      <div class="flex flex-1 justify-center items-center mx-auto flex-col w-full max-w-screen-lg sm:-mt-[72px]">
+      <Nav @removeLocalStorage="removeAndRerender()" @functionCalculateNecessaryRent="functionCalculateNecessaryRent" :rentCalcValue="rentCalcValue" />
+      <div class="flex flex-1 justify-center items-center mx-auto flex-col w-full max-w-screen-lg sm:-mt-[72px] z-10">
         <Heading />
-        <Body :key="componentKey" :isDarkMode="isDarkMode" />
+        <Body :key="componentKey" :isDarkMode="isDarkMode" :savingsCalc="savingsCalc" @rentCalc="rentCalc" />
       </div>
     </main>
   </div>
@@ -25,7 +25,9 @@ export default {
     return {
       isDarkMode: false,
       componentKey: 0,
-      html: document.querySelector('html')
+      html: document.querySelector('html'),
+      savingsCalc: '',
+      rentCalcValue: ''
     }
   },
   provide() {
@@ -61,11 +63,17 @@ export default {
       localStorage.isDarkModeTheme = theme
       this.componentKey += 1
     },
+    functionCalculateNecessaryRent(savings) {
+      this.savingsCalc = savings
+    },
+    rentCalc(value) {
+      this.rentCalcValue = value
+    } 
   },
   watch: {
     isDarkMode(newVal) {
       newVal ? localStorage.isDarkModeTheme = 'true' : localStorage.isDarkModeTheme = 'false'
-    }
+    },
   }
 }
 </script>

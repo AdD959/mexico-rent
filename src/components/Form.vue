@@ -17,7 +17,7 @@
             <InputStandard :data="data.activities" />
             <InputStandard :data="data.tax" :readonly="true" :value="totalTax" />
             <div class="relative">
-                <InputStandard :data="data.savings" :readonly="true" :value="totalSavings" :color="color" checkboxLabel="End of Year bonus:" />
+                <InputStandard :data="data.savings" :readonly="true" :value="totalSavingsActual" :color="color" checkboxLabel="End of Year bonus:" />
                 <div class="absolute right-0 top-1/2 pr-2 text-zinc-600 dark:text-zinc-500">${{ (totalCompanySavings * 2) * 12 }}</div>
 
             </div>
@@ -39,6 +39,7 @@ export default {
         siValeRemainder: Number,
         siValeValue: Number,
         totalCompanySavings: Number,
+        totalSavingsActual: Number
     },
     components: {
         InputStandard,
