@@ -6,7 +6,10 @@
             <InputStandard :data="data.income2" :checkbox="true" checkboxLabel="Savings" />
             <InputStandard :data="data.rent" />
             <InputStandard :data="data.bills" />
-            <InputStandard :data="data.food" />
+            <div class="relative">
+                <InputStandard :data="data.food" />
+                <div class="absolute right-0 top-1/2 pr-2 text-zinc-600 dark:text-zinc-500">({{ siValeRemainder }})</div>
+            </div>
             <InputStandard :data="data.siVale" />
             <InputStandard :data="data.activities" />
             <InputStandard :data="data.tax" :readonly="true" :value="totalTax" />
@@ -26,6 +29,7 @@ export default {
         totalSavings: Number,
         totalDeficit: Number,
         totalTax: Number,
+        siValeRemainder: Number,
     },
     components: {
         InputStandard,

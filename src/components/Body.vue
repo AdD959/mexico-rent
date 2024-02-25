@@ -4,7 +4,7 @@
             <Chart :data="data" :isDarkMode="isDarkMode" :siVale="siValeValue" :totalSavings="totalSavings"
                 :totalIncome="totalIncome" :totalDeficit="totalDeficit" :totalTax="totalTax" :totalCompanySavings="totalCompanySavings" :totalFood="totalFood"/>
             <Form :data="data" :totalIncome="totalIncome" :totalSavings="totalSavings" :totalDeficit="totalDeficit"
-                :totalTax="totalTax" :totalFood="totalFood" />
+                :totalTax="totalTax" :totalFood="totalFood" :siValeRemainder="siValeRemainder" />
         </div>
     </div>
 </template>
@@ -23,7 +23,7 @@ export default {
     },
     computed: {
         totalIncome() {
-            return (this.data.income1.value + this.data.income2.value) - this.totalCompanySavings || 0
+            return (this.data.income1.value + this.data.income2.value) - this.totalCompanySavings + this.siValeValue || 0
         },
         totalExpenses() {
             return this.data.rent.value + this.data.tax.value + this.data.bills.value + this.data.food.value + this.data.activities.value
@@ -35,7 +35,10 @@ export default {
             return Math.round(this.totalIncome - this.totalExpenses) < 0 ? Math.round(this.totalIncome - this.totalExpenses) : 0
         },
         siValeValue() {
-            return Math.round(this.data.siVale.value * 4307.68)
+            return Math.round(this.data.siVale.value * 4307.68 > this.data.food.value ? this.data.food.value : this.data.siVale.value * 4307.68)
+        },
+        siValeRemainder() {
+            return Math.round(this.data.food.value - this.siValeValue < 0 ? 0 : this.data.food.value - this.siValeValue)
         },
         totalTax() {
             return Math.round(this.findThresholdIndex(this.data.income1.value) + this.findThresholdIndex(this.data.income2.value));
