@@ -18,7 +18,8 @@ import Chart from '@/components/Chart.vue';
 export default {
     props: {
         isDarkMode: Boolean,
-        savingsCalc: ''
+        savingsCalc: '',
+        isMXN: Boolean
     },
     components: {
         Form,
@@ -26,13 +27,13 @@ export default {
     },
     computed: {
         totalIncome() {
-            return (this.data.income1.value + this.data.income2.value) - this.totalCompanySavings + this.siValeValue || 0
+            return Math.round((this.data.income1.value + this.data.income2.value) - this.totalCompanySavings + this.siValeValue || 0)
         },
         totalExpenses() {
-            return this.data.rent.value + this.data.tax.value + this.data.bills.value + this.data.food.value + this.data.activities.value
+            return Math.round(this.data.rent.value + this.data.tax.value + this.data.bills.value + this.data.food.value + this.data.activities.value)
         },
         totalExpensesMinusRent() {
-            return this.data.tax.value + this.data.bills.value + this.data.food.value + this.data.activities.value
+            return Math.round(this.data.tax.value + this.data.bills.value + this.data.food.value + this.data.activities.value)
         },
         totalSavings() {
             return Math.round(this.totalIncome - this.totalExpenses) < 0 ? 0 : Math.round(this.totalIncome - this.totalExpenses)
@@ -53,6 +54,7 @@ export default {
             return Math.round(this.data.food.value - this.siValeValue < 0 ? 0 : this.data.food.value - this.siValeValue)
         },
         totalTax() {
+            if (!this.isMXN) { return Math.round(this.findThresholdIndex(this.data.income1.value * 20.5) + this.findThresholdIndex(this.data.income2.value * 20.5) / 20.5) }
             return Math.round(this.findThresholdIndex(this.data.income1.value) + this.findThresholdIndex(this.data.income2.value));
         },
         totalCompanySavings() {
@@ -62,7 +64,7 @@ export default {
             return Math.round(this.data.food.value - this.siValeValue < 0 ? 0 : this.data.food.value - this.siValeValue)
         },
         foodToSavings() {
-            return this.data.food.value - this.totalFood
+            return Math.round(this.data.food.value - this.totalFood)
         }
     },
     data() {
@@ -176,6 +178,21 @@ export default {
         totalIncome() {
             this.$emit('rentCalc', this.savingsRentCalc)
         },
+        isMXN() {
+            if (this.isMXN) {
+                Object.keys(this.data).forEach((key) => {
+                    if (this.data[key].label === 'Si Vale') { return }
+                    if (this.data[key].label === 'Tax') { return }
+                    Math.round(this.data[key].value *= 20.5)
+                });
+            } else {
+                Object.keys(this.data).forEach((key) => {
+                    if (this.data[key].label === 'Si Vale') { return }
+                    if (this.data[key].label === 'Tax') { return }
+                    Math.round(this.data[key].value /= 20.5)
+                });
+            }
+        }
     }
 }
 </script>

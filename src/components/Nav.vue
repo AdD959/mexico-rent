@@ -20,6 +20,13 @@
             <aside :class="activeFunction === 'monthSavings' ? 'w-auto' : 'w-0 hidden'" class="bg-red-500 text-white p-1 px-2 text-xs -bottom-8 absolute left-0 transition-transform duration-200">${{ rentCalcValue }} max</aside>
         </div>
         <div class="flex items-center">
+            <button class="flex bg-zinc-500 self-end rounded-full w-14 h-8 relative" @click="toggleCurrency">
+                <div :class="isMXN ? 'translate-x-7 mr-1 bg-red-200 dark:bg-red-200' : 'translate-x-0 left-0 ml-1 bg-blue-200 dark:bg-blue-200'"
+                    class="absolute w-6 h-6 rounded-full top-1/2 -translate-y-1/2 transition-all duration-200 dark:bg-zinc-950">
+                </div>
+            </button>
+        </div>
+        <div class="flex items-center">
             <button class="flex bg-zinc-500 self-end rounded-full w-14 h-8 relative" @click="toggleDarkMode">
                 <div :class="isDarkMode ? 'translate-x-7 mr-1' : 'translate-x-0 left-0 ml-1'"
                     class="absolute w-6 h-6 bg-zinc-200 rounded-full top-1/2 -translate-y-1/2 transition-all duration-200 dark:bg-zinc-950">
@@ -55,13 +62,14 @@ export default {
     data() {
         return {
             activeFunction: '',
-            savingsCalc: ''
+            savingsCalc: '',
+            isMXN: true
         }
     },
     watch: {
         savingsCalc(newVal, oldVal) {
             this.$emit('functionCalculateNecessaryRent', newVal)
-        }
+        },
     },
     methods: {
         removeLocalStorage() {
@@ -69,6 +77,10 @@ export default {
                 this.$emit('removeLocalStorage')
             }
         },
+        toggleCurrency() {
+            this.isMXN = !this.isMXN
+            this.$emit('toggleCurrency', this.isMXN)
+        }
     }
 }
 </script>
