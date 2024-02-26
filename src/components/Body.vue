@@ -6,7 +6,7 @@
                 :totalCompanySavings="totalCompanySavings" :totalFood="totalFood" />
             <Form :data="data" :totalIncome="totalIncome" :totalSavings="totalSavings" :totalDeficit="totalDeficit"
                 :totalTax="totalTax" :totalFood="totalFood" :siValeRemainder="siValeRemainder" :siValeValue="siValeValue"
-                :totalCompanySavings="totalCompanySavings" :totalSavingsActual="totalSavingsActual" />
+                :totalCompanySavings="totalCompanySavings" :totalSavingsActual="totalSavingsActual" :isMXN="isMXN" />
         </div>
     </div>
 </template>
@@ -48,13 +48,14 @@ export default {
             return Math.round(((this.totalIncome - this.totalExpensesMinusRent) - this.savingsCalc) / 1000) * 1000;
         },
         siValeValue() {
+            if (!this.isMXN) { return Math.round(this.data.siVale.value * (4307.68 / 20.5) > this.data.food.value ? this.data.food.value : this.data.siVale.value * (4307.68 / 20.5)) }
             return Math.round(this.data.siVale.value * 4307.68 > this.data.food.value ? this.data.food.value : this.data.siVale.value * 4307.68)
         },
         siValeRemainder() {
             return Math.round(this.data.food.value - this.siValeValue < 0 ? 0 : this.data.food.value - this.siValeValue)
         },
         totalTax() {
-            if (!this.isMXN) { return Math.round(this.findThresholdIndex(this.data.income1.value * 20.5) + this.findThresholdIndex(this.data.income2.value * 20.5) / 20.5) }
+            if (!this.isMXN) { return Math.round(Math.round(this.findThresholdIndex(this.data.income1.value * 20.5) + this.findThresholdIndex(this.data.income2.value * 20.5)) / 20.5) }
             return Math.round(this.findThresholdIndex(this.data.income1.value) + this.findThresholdIndex(this.data.income2.value));
         },
         totalCompanySavings() {
@@ -155,9 +156,9 @@ export default {
         },
         savingsChanged(val, savings, income2) {
             if (income2) {
-                this.companySavings2 = savings ? this.data.income2.value * 0.13 : 0
+                Math.round(this.companySavings2 = savings ? this.data.income2.value * 0.13 : 0)
             } else {
-                this.companySavings1 = savings ? this.data.income1.value * 0.13 : 0
+                Math.round(this.companySavings1 = savings ? this.data.income1.value * 0.13 : 0)
             }
         },
         findThresholdIndex(num) {

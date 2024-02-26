@@ -39,7 +39,8 @@ export default {
         siValeRemainder: Number,
         siValeValue: Number,
         totalCompanySavings: Number,
-        totalSavingsActual: Number
+        totalSavingsActual: Number,
+        isMXN: Boolean
     },
     components: {
         InputStandard,

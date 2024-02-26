@@ -25,7 +25,8 @@ export default {
         value: Number,
         color: String,
         checkbox: Boolean,
-        checkboxLabel: String
+        checkboxLabel: String,
+        isMXN: Boolean
     },
     data() {
         return {
@@ -51,9 +52,9 @@ export default {
     },
     watch: {
         inputVal(newVal, oldVal) {
-            let oldStoredVal = JSON.parse(localStorage.getItem(this.data.label))
-            newVal === '' ? 0 : localStorage.setItem(this.data.label, newVal)
-            this.inputChanged(this.inputVal, this.data.index)
+                let oldStoredVal = JSON.parse(localStorage.getItem(this.data.label))
+                newVal === '' ? 0 : localStorage.setItem(this.data.label, newVal)
+                this.inputChanged(this.inputVal, this.data.index)
         },
     },
     methods: {
