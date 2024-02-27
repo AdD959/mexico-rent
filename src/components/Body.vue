@@ -44,7 +44,7 @@ export default {
             return Math.round(this.totalIncome - this.totalExpenses) < 0 ? Math.round(this.totalIncome - this.totalExpenses) : 0
         },
         savingsRentCalc() {
-            return Math.round(((this.totalIncome - this.totalExpensesMinusRent) - this.savingsCalc) / 1000) * 1000;
+            return Math.round(((this.totalIncome - this.totalExpensesMinusRent) - this.savingsCalc) / 1000) * 1000 || 0;
         },
         siValeValue() {
             return Math.round(this.data.siVale.value * 4307.68 > this.data.food.value ? this.data.food.value : this.data.siVale.value * 4307.68)
@@ -166,7 +166,7 @@ export default {
                     return totalTax
                 }
             }
-            return -1;
+            return 0;
         },
     },
     watch: {
