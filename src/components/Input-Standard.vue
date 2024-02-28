@@ -10,7 +10,7 @@
                 type="number" v-model="inputVal">
             <input v-show="checkbox" type="checkbox" class="ml-5 mr-3" :name="`${data.label}-checkbox`"
                 @input="toggleCheckbox">
-            <span v-show="data.pricing" class="absolute top-1/2 left-3 transform -translate-y-1/2 text-lg pl-1">$</span>
+            <span v-show="data.pricing" class="absolute top-1/2 left-3 transform -translate-y-1/2 text-lg pl-1" :class="readonly ? 'dark:text-zinc-500 text-zinc-600' : ''">$</span>
         </div>
     </div>
 </template>
