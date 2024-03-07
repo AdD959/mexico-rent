@@ -1,8 +1,8 @@
 <template>
     <div class="relative">
         <label class="text-zinc-800 dark:text-zinc-400" :for="processLabel">{{ data.label }}</label>
-        <label class="text-zinc-800 dark:text-zinc-400 absolute right-0 text-xs"
-            :for="`${data.label}-checkbox`">{{ checkboxLabel }}</label>
+        <label class="text-zinc-800 dark:text-zinc-400 absolute right-0 text-xs" :for="`${data.label}-checkbox`">{{
+            checkboxLabel }}</label>
         <div class="relative flex items-center">
             <input
                 :class="this.borderColor, readonly ? 'text-zinc-600 bg-zinc-400 dark:text-zinc-500 dark:bg-zinc-900 cursor-default' : 'dark:text-zinc-100 bg-zinc-300 dark:bg-zinc-800'"
@@ -35,7 +35,7 @@ export default {
             borderColor: this.color || this.data.color || 'border-transparent'
         }
     },
-    inject: ['inputChanged','savingsChanged'],
+    inject: ['inputChanged', 'savingsChanged'],
     mounted() {
         this.inputVal = JSON.parse(localStorage.getItem(this.data.label)) || 0
     },
@@ -52,10 +52,15 @@ export default {
     },
     watch: {
         inputVal(newVal, oldVal) {
+            if (this.isMXN) {
                 let oldStoredVal = JSON.parse(localStorage.getItem(this.data.label))
                 newVal === '' ? 0 : localStorage.setItem(this.data.label, newVal)
                 this.inputChanged(this.inputVal, this.data.index)
+            }
         },
+        isMXN(newVal, oldVal) {
+            this.inputVal = Math.round(this.data.value)
+        }
     },
     methods: {
         toggleCheckbox(event) {

@@ -184,13 +184,13 @@ export default {
                 Object.keys(this.data).forEach((key) => {
                     if (this.data[key].label === 'Si Vale') { return }
                     if (this.data[key].label === 'Tax') { return }
-                    Math.round(this.data[key].value *= 20.5)
+                    this.data[key].value *= 20.5
                 });
             } else {
                 Object.keys(this.data).forEach((key) => {
                     if (this.data[key].label === 'Si Vale') { return }
                     if (this.data[key].label === 'Tax') { return }
-                    Math.round(this.data[key].value /= 20.5)
+                    this.data[key].value /= 20.5
                 });
             }
         }
