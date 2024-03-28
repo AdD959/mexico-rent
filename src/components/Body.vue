@@ -3,7 +3,7 @@
         <div class="flex flex-col md:flex-row gap-10 w-full">
             <Chart :data="data" :isDarkMode="isDarkMode" :siVale="siValeValue" :totalSavings="totalSavings"
                 :totalIncome="totalIncome" :totalDeficit="totalDeficit" :totalTax="totalTax"
-                :totalCompanySavings="totalCompanySavings" :totalFood="totalFood" />
+                :totalCompanySavings="totalCompanySavings" :totalFood="totalFood" :totalIMSS="totalIMSS" />
             <Form :data="data" :totalIncome="totalIncome" :totalSavings="totalSavings" :totalDeficit="totalDeficit"
                 :totalTax="totalTax" :totalFood="totalFood" :siValeRemainder="siValeRemainder" :siValeValue="siValeValue"
                 :totalCompanySavings="totalCompanySavings" :totalSavingsActual="totalSavingsActual" :isMXN="isMXN" />
@@ -30,7 +30,7 @@ export default {
             return Math.round((this.data.income1.value + this.data.income2.value) - this.totalCompanySavings + this.siValeValue || 0)
         },
         totalExpenses() {
-            return Math.round(this.data.rent.value + this.data.tax.value + this.data.bills.value + this.data.food.value + this.data.activities.value)
+            return Math.round(this.data.rent.value + this.totalTax + this.data.bills.value + this.data.food.value + this.data.activities.value + this.totalIMSS)
         },
         totalExpensesMinusRent() {
             return Math.round(this.data.tax.value + this.data.bills.value + this.data.food.value + this.data.activities.value)
@@ -66,6 +66,9 @@ export default {
         },
         foodToSavings() {
             return Math.round(this.data.food.value - this.totalFood)
+        },
+        totalIMSS() {
+            return Math.round(this.totalIncome * 0.03)
         }
     },
     data() {
@@ -137,6 +140,13 @@ export default {
                     index: 8,
                     label: 'Savings',
                     color: 'border-sky-300',
+                    pricing: true,
+                    value: 0,
+                },
+                IMSS: {
+                    index: 9,
+                    label: 'IMSS',
+                    color: 'dark:border-zinc-400 border-zinc-700',
                     pricing: true,
                     value: 0,
                 },
