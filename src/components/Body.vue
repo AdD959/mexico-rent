@@ -87,19 +87,28 @@ export default {
     provide() {
         return {
             inputChanged: this.inputChanged,
+            checkboxToggled: this.checkboxToggled,
             savingsChanged: this.savingsChanged,
+            setcheckBox: this.setcheckBox
         }
     },
     methods: {
+        setcheckBox(val, index) {
+            if (index === 0) {
+                this.companySavings1 = Math.round(val ? JSON.parse(localStorage.getItem('Income 1')) * 0.11 : 0)
+            } else if (index === 1) {
+                this.companySavings2 = Math.round(val ? JSON.parse(localStorage.getItem('Income 2')) * 0.11 : 0)
+            }
+        },
         inputChanged(newVal, index) {
             typeof newVal === "string" ? newVal = 0 : newVal = newVal
             this.$store.state.data[Object.keys(this.$store.state.data)[index]].value = newVal
         },
         savingsChanged(val, savings, income2) {
             if (income2) {
-                this.companySavings2 = Math.round(savings ? this.$store.state.data.income2.value * 0.13 : 0)
+                this.companySavings2 = Math.round(savings ? this.$store.state.data.income2.value * 0.11 : 0)
             } else {
-                this.companySavings1 = Math.round(savings ? this.$store.state.data.income1.value * 0.13 : 0)
+                this.companySavings1 = Math.round(savings ? this.$store.state.data.income1.value * 0.11 : 0)
             }
         },
         findThresholdIndex(num) {
@@ -124,7 +133,7 @@ export default {
             if (this.isMXN) {
                 this.companySavings1 *= 20.5
                 this.companySavings2 *= 20.5
-                Object.keys(this.$store.state.data).forEach((key) => {
+                Object.keys(this.$store.state.datwhata).forEach((key) => {
                     if (this.$store.state.data[key].label === 'Si Vale') { return }
                     if (this.$store.state.data[key].label === 'Tax') { return }
                     this.$store.state.data[key].value *= 20.5

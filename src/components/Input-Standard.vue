@@ -9,8 +9,9 @@
                 :readonly="readonly || false" class="border-l-8 text-lg p-2 pl-6 outline-none appearance-none w-full"
                 type="number" v-model="inputVal">
             <input v-show="checkbox" type="checkbox" class="ml-5 mr-3" :name="`${data.label}-checkbox`"
-                @input="toggleCheckbox">
-            <span v-show="data.pricing" class="absolute top-1/2 left-3 transform -translate-y-1/2 text-lg pl-1">{{  $store.state.currency }}</span>
+                @input="toggleCheckbox" v-model="checkboxVal">
+            <span v-show="data.pricing" class="absolute top-1/2 left-3 transform -translate-y-1/2 text-lg pl-1">{{
+            $store.state.currency }}</span>
         </div>
     </div>
 </template>
@@ -26,18 +27,21 @@ export default {
         color: String,
         checkbox: Boolean,
         checkboxLabel: String,
-        isMXN: Boolean
+        isMXN: Boolean,
     },
     data() {
         return {
             inputVal: this.value || 0,
             inputStoredVal: 0,
-            borderColor: this.color || this.data.color || 'border-transparent'
+            borderColor: this.color || this.data.color || 'border-transparent',
+            checkboxVal: false
         }
     },
-    inject: ['inputChanged', 'savingsChanged'],
+    inject: ['inputChanged', 'savingsChanged', 'setcheckBox'],
     mounted() {
         this.inputVal = JSON.parse(localStorage.getItem(this.data.label)) || 0
+        this.checkboxVal = JSON.parse(localStorage.getItem(`${this.data.label} Checkbox`)) || false
+        this.loadCheckBox(this.checkboxVal)
     },
     updated() {
         this.borderColor = this.color || this.data.color || 'border-transparent'
@@ -58,11 +62,18 @@ export default {
                 this.inputChanged(this.inputVal, this.data.index)
             }
         },
+        checkboxVal(newVal, oldVal) {
+            let oldStoredVal = JSON.parse(localStorage.getItem(`${this.data.label} Checkbox`))
+            newVal === true ? localStorage.setItem(`${this.data.label} Checkbox`, true) : localStorage.setItem(`${this.data.label} Checkbox`, false)
+        },
         isMXN(newVal, oldVal) {
             this.inputVal = Math.round(this.data.value)
         }
     },
     methods: {
+        loadCheckBox(isToggled) {
+            this.setcheckBox(this.checkboxVal, this.data.index)
+        },
         toggleCheckbox(event) {
             this.savingsChanged(this.inputVal, event.target.checked, this.data.index)
         }
