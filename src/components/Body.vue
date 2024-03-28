@@ -1,12 +1,12 @@
 <template>
     <div>
         <div class="flex flex-col md:flex-row gap-10 w-full">
-            <Chart :data="data" :isDarkMode="isDarkMode" :siVale="siValeValue" :totalSavings="totalSavings"
+            <Chart :data="this.$store.state.data" :isDarkMode="isDarkMode" :siVale="siValeValue" :totalSavings="totalSavingsActual"
                 :totalIncome="totalIncome" :totalDeficit="totalDeficit" :totalTax="totalTax"
-                :totalCompanySavings="totalCompanySavings" :totalFood="totalFood" />
-            <Form :data="data" :totalIncome="totalIncome" :totalSavings="totalSavings" :totalDeficit="totalDeficit"
+                :totalCompanySavings="totalCompanySavings" :totalFood="totalFood" :totalIMSS="totalIMSS" />
+            <Form :totalIncome="totalIncome" :totalSavings="totalSavings" :totalDeficit="totalDeficit"
                 :totalTax="totalTax" :totalFood="totalFood" :siValeRemainder="siValeRemainder" :siValeValue="siValeValue"
-                :totalCompanySavings="totalCompanySavings" :totalSavingsActual="totalSavingsActual" />
+                :totalCompanySavings="totalCompanySavings" :totalSavingsActual="totalSavingsActual" :isMXN="isMXN" :totalExpensesMinusRent="totalExpensesMinusRent" />
         </div>
     </div>
 </template>
@@ -18,7 +18,8 @@ import Chart from '@/components/Chart.vue';
 export default {
     props: {
         isDarkMode: Boolean,
-        savingsCalc: ''
+        savingsCalc: '',
+        isMXN: Boolean
     },
     components: {
         Form,
@@ -26,13 +27,13 @@ export default {
     },
     computed: {
         totalIncome() {
-            return (this.data.income1.value + this.data.income2.value) - this.totalCompanySavings + this.siValeValue || 0
+            return Math.round((this.$store.state.data.income1.value + this.$store.state.data.income2.value) - this.totalCompanySavings || 0)
         },
         totalExpenses() {
-            return this.data.rent.value + this.data.tax.value + this.data.bills.value + this.data.food.value + this.data.activities.value
+            return Math.round(this.$store.state.data.rent.value + this.totalTax + this.$store.state.data.bills.value + this.totalFood + this.$store.state.data.activities.value + this.totalIMSS)
         },
         totalExpensesMinusRent() {
-            return this.data.tax.value + this.data.bills.value + this.data.food.value + this.data.activities.value
+            return Math.round(this.totalTax+ this.$store.state.data.bills.value + this.totalFood + this.$store.state.data.activities.value)
         },
         totalSavings() {
             return Math.round(this.totalIncome - this.totalExpenses) < 0 ? 0 : Math.round(this.totalIncome - this.totalExpenses)
@@ -47,22 +48,27 @@ export default {
             return Math.round(((this.totalIncome - this.totalExpensesMinusRent) - this.savingsCalc) / 1000) * 1000 || 0;
         },
         siValeValue() {
-            return Math.round(this.data.siVale.value * 4307.68 > this.data.food.value ? this.data.food.value : this.data.siVale.value * 4307.68)
+            if (!this.isMXN) { return Math.round(this.$store.state.data.siVale.value * (4307.68 / 20.5) > this.$store.state.data.food.value ? this.$store.state.data.food.value : this.$store.state.data.siVale.value * (4307.68 / 20.5)) }
+            return Math.round(this.$store.state.data.siVale.value * 4307.68 > this.$store.state.data.food.value ? this.$store.state.data.food.value : this.$store.state.data.siVale.value * 4307.68)
         },
         siValeRemainder() {
-            return Math.round(this.data.food.value - this.siValeValue < 0 ? 0 : this.data.food.value - this.siValeValue)
+            return Math.round(this.$store.state.data.food.value - this.siValeValue < 0 ? 0 : this.$store.state.data.food.value - this.siValeValue)
         },
         totalTax() {
-            return Math.round(this.findThresholdIndex(this.data.income1.value) + this.findThresholdIndex(this.data.income2.value));
+            if (!this.isMXN) { return Math.round(Math.round(this.findThresholdIndex(this.$store.state.data.income1.value * 20.5) + this.findThresholdIndex(this.$store.state.data.income2.value * 20.5)) / 20.5) }
+            return Math.round(this.findThresholdIndex(this.$store.state.data.income1.value) + this.findThresholdIndex(this.$store.state.data.income2.value));
         },
         totalCompanySavings() {
             return Math.round(this.companySavings1 + this.companySavings2)
         },
         totalFood() {
-            return Math.round(this.data.food.value - this.siValeValue < 0 ? 0 : this.data.food.value - this.siValeValue)
+            return Math.round(this.$store.state.data.food.value - this.siValeValue < 0 ? 0 : this.$store.state.data.food.value - this.siValeValue)
         },
         foodToSavings() {
-            return this.data.food.value - this.totalFood
+            return Math.round(this.$store.state.data.food.value - this.totalFood)
+        },
+        totalIMSS() {
+            return Math.round(Math.round((this.$store.state.data.income1.value + this.$store.state.data.income2.value)) * 0.03)
         }
     },
     data() {
@@ -75,70 +81,8 @@ export default {
                 fixed_fee: [0.00, 14.32, 371.83, 893.63, 1182.88, 1640.18, 5004.12, 9236.89, 22665.17, 32691.18, 117912.32],
                 exceedance: [1.92, 6.40, 10.88, 16.00, 17.92, 21.36, 23.52, 30.00, 32.00, 34.00, 35.00],
             },
-            data: {
-                income1: {
-                    index: 0,
-                    label: 'Income 1',
-                    pricing: true,
-                    value: 0,
-                },
-                income2: {
-                    index: 1,
-                    label: 'Income 2',
-                    pricing: true,
-                    value: 0,
-                },
-                rent: {
-                    index: 2,
-                    label: 'Rent',
-                    color: 'dark:border-zinc-400 border-zinc-700',
-                    pricing: true,
-                    value: 0,
-                },
-                bills: {
-                    index: 3,
-                    label: 'Bills',
-                    color: 'dark:border-zinc-500 border-zinc-600',
-                    pricing: true,
-                    value: 0,
-                },
-                tax: {
-                    index: 4,
-                    label: 'Tax',
-                    color: 'dark:border-zinc-600 border-zinc-500',
-                    pricing: true,
-                    value: 0,
-                },
-                food: {
-                    index: 5,
-                    label: 'Food',
-                    color: 'border-amber-300',
-                    pricing: true,
-                    value: 0,
-                },
-                siVale: {
-                    index: 6,
-                    label: 'Si Vale',
-                    color: 'border-yellow-300',
-                    pricing: false,
-                    value: 0,
-                },
-                activities: {
-                    index: 7,
-                    label: 'Activities',
-                    color: 'border-green-300',
-                    pricing: true,
-                    value: 0,
-                },
-                savings: {
-                    index: 8,
-                    label: 'Savings',
-                    color: 'border-sky-300',
-                    pricing: true,
-                    value: 0,
-                },
-            }
         }
+            
     },
     provide() {
         return {
@@ -149,13 +93,13 @@ export default {
     methods: {
         inputChanged(newVal, index) {
             typeof newVal === "string" ? newVal = 0 : newVal = newVal
-            this.data[Object.keys(this.data)[index]].value = newVal
+            this.$store.state.data[Object.keys(this.$store.state.data)[index]].value = newVal
         },
         savingsChanged(val, savings, income2) {
             if (income2) {
-                this.companySavings2 = savings ? this.data.income2.value * 0.13 : 0
+                this.companySavings2 = Math.round(savings ? this.$store.state.data.income2.value * 0.13 : 0)
             } else {
-                this.companySavings1 = savings ? this.data.income1.value * 0.13 : 0
+                this.companySavings1 = Math.round(savings ? this.$store.state.data.income1.value * 0.13 : 0)
             }
         },
         findThresholdIndex(num) {
@@ -176,6 +120,25 @@ export default {
         totalIncome() {
             this.$emit('rentCalc', this.savingsRentCalc)
         },
+        isMXN() {
+            if (this.isMXN) {
+                this.companySavings1 *= 20.5
+                this.companySavings2 *= 20.5
+                Object.keys(this.$store.state.data).forEach((key) => {
+                    if (this.$store.state.data[key].label === 'Si Vale') { return }
+                    if (this.$store.state.data[key].label === 'Tax') { return }
+                    this.$store.state.data[key].value *= 20.5
+                });
+            } else {
+                this.companySavings1 /= 20.5
+                this.companySavings2 /= 20.5
+                Object.keys(this.$store.state.data).forEach((key) => {
+                    if (this.$store.state.data[key].label === 'Si Vale') { return }
+                    if (this.$store.state.data[key].label === 'Tax') { return }
+                    this.$store.state.data[key].value /= 20.5
+                });
+            }
+        }
     }
 }
 </script>

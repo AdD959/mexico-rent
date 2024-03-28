@@ -1,10 +1,10 @@
 <template>
   <div :class="isDarkMode ? 'dark' : ''" ref="site" class="w-full h-full absolute">
     <main class="flex flex-col items-end dark:text-zinc-400 bg-zinc-200 dark:bg-zinc-950 text-zinc-950 p-10 min-h-full">
-      <Nav @removeLocalStorage="removeAndRerender()" @functionCalculateNecessaryRent="functionCalculateNecessaryRent" :rentCalcValue="rentCalcValue" />
+      <Nav @removeLocalStorage="removeAndRerender()" @functionCalculateNecessaryRent="functionCalculateNecessaryRent" :rentCalcValue="rentCalcValue" @toggleCurrency="toggleCurrency"/>
       <div class="flex flex-1 justify-center items-center mx-auto flex-col w-full max-w-screen-lg sm:-mt-[72px] z-10">
         <Heading />
-        <Body :key="componentKey" :isDarkMode="isDarkMode" :savingsCalc="savingsCalc" @rentCalc="rentCalc" />
+        <Body :key="componentKey" :isDarkMode="isDarkMode" :savingsCalc="savingsCalc" @rentCalc="rentCalc" :isMXN="isMXN" />
       </div>
     </main>
   </div>
@@ -15,6 +15,8 @@ import Heading from '@/components/Heading.vue'
 import Body from '@/components/Body.vue'
 import Nav from '@/components/Nav.vue'
 import { computed } from 'vue'
+
+
 export default {
   components: {
     Heading,
@@ -27,7 +29,8 @@ export default {
       componentKey: 0,
       html: document.querySelector('html'),
       savingsCalc: '',
-      rentCalcValue: ''
+      rentCalcValue: '',
+      isMXN: true
     }
   },
   provide() {
@@ -56,6 +59,10 @@ export default {
     },
     toggleDarkMode() {
       this.setTheme(!this.isDarkMode)
+    },
+    toggleCurrency(isMXN) {
+      this.isMXN = isMXN
+      this.$store.state.currency = this.isMXN ? '$' : '£'
     },
     removeAndRerender() {
       const theme = localStorage.isDarkModeTheme

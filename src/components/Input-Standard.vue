@@ -1,8 +1,8 @@
 <template>
     <div class="relative">
         <label class="text-zinc-800 dark:text-zinc-400" :for="processLabel">{{ data.label }}</label>
-        <label class="text-zinc-800 dark:text-zinc-400 absolute right-0 text-xs"
-            :for="`${data.label}-checkbox`">{{ checkboxLabel }}</label>
+        <label class="text-zinc-800 dark:text-zinc-400 absolute right-0 text-xs" :for="`${data.label}-checkbox`">{{
+            checkboxLabel }}</label>
         <div class="relative flex items-center">
             <input
                 :class="this.borderColor, readonly ? 'text-zinc-600 bg-zinc-400 dark:text-zinc-500 dark:bg-zinc-900 cursor-default' : 'dark:text-zinc-100 bg-zinc-300 dark:bg-zinc-800'"
@@ -10,7 +10,7 @@
                 type="number" v-model="inputVal">
             <input v-show="checkbox" type="checkbox" class="ml-5 mr-3" :name="`${data.label}-checkbox`"
                 @input="toggleCheckbox">
-            <span v-show="data.pricing" class="absolute top-1/2 left-3 transform -translate-y-1/2 text-lg pl-1" :class="readonly ? 'dark:text-zinc-500 text-zinc-600' : ''">$</span>
+            <span v-show="data.pricing" class="absolute top-1/2 left-3 transform -translate-y-1/2 text-lg pl-1">{{  $store.state.currency }}</span>
         </div>
     </div>
 </template>
@@ -25,7 +25,8 @@ export default {
         value: Number,
         color: String,
         checkbox: Boolean,
-        checkboxLabel: String
+        checkboxLabel: String,
+        isMXN: Boolean
     },
     data() {
         return {
@@ -34,7 +35,7 @@ export default {
             borderColor: this.color || this.data.color || 'border-transparent'
         }
     },
-    inject: ['inputChanged','savingsChanged'],
+    inject: ['inputChanged', 'savingsChanged'],
     mounted() {
         this.inputVal = JSON.parse(localStorage.getItem(this.data.label)) || 0
     },
@@ -51,10 +52,15 @@ export default {
     },
     watch: {
         inputVal(newVal, oldVal) {
-            let oldStoredVal = JSON.parse(localStorage.getItem(this.data.label))
-            newVal === '' ? 0 : localStorage.setItem(this.data.label, newVal)
-            this.inputChanged(this.inputVal, this.data.index)
+            if (this.isMXN) {
+                let oldStoredVal = JSON.parse(localStorage.getItem(this.data.label))
+                newVal === '' ? 0 : localStorage.setItem(this.data.label, newVal)
+                this.inputChanged(this.inputVal, this.data.index)
+            }
         },
+        isMXN(newVal, oldVal) {
+            this.inputVal = Math.round(this.data.value)
+        }
     },
     methods: {
         toggleCheckbox(event) {
