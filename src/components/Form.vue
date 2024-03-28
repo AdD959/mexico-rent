@@ -3,8 +3,8 @@
         <h2 class="text-center mb-4">Total Income: {{ $store.state.currency }}{{ totalIncome }}</h2>
 
         <form class="w-full sm:min-w-[300px] inline-grid grid-cols-[repeat(auto-fit,minmax(180px,_1fr))] gap-4" action="">
-            <InputStandard :isMXN="isMXN" :data="this.$store.state.data.income1" :checkbox="true" checkboxLabel="13% Company Savings" />
-            <InputStandard :isMXN="isMXN" :data="this.$store.state.data.income2" :checkbox="true" checkboxLabel="13% Company Savings" />
+            <InputStandard :isMXN="isMXN" :data="this.$store.state.data.income1" :checkbox="true" checkboxLabel="11% Company Savings" />
+            <InputStandard :isMXN="isMXN" :data="this.$store.state.data.income2" :checkbox="true" checkboxLabel="11% Company Savings" />
             <div class="relative">
                 <div>
                     <InputStandard :isMXN="isMXN" :data="this.$store.state.data.rent" :checkboxLabel="`% of income`"/>
