@@ -17,7 +17,7 @@
                     <span class="absolute top-1/2 left-3 transform -translate-y-1/2 text-lg pl-1">$</span>
                 </div>
             </div>
-            <aside :class="activeFunction === 'monthSavings' ? 'w-auto' : 'w-0 hidden'" class="bg-red-500 text-white p-1 px-2 text-xs -bottom-8 absolute left-0 transition-transform duration-200">${{ rentCalcValue }} max</aside>
+            <aside :class="activeFunction === 'monthSavings' ? 'w-auto' : 'w-0 hidden'" class="bg-red-500 text-white p-1 px-2 text-xs -bottom-8 absolute left-0 transition-transform duration-200 cursor-default">${{ rentCalcValue }} max</aside>
         </div>
         <div class="flex items-center">
             <button class="flex bg-zinc-500 self-end rounded-full w-14 h-8 relative" @click="toggleCurrency">

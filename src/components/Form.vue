@@ -1,6 +1,7 @@
 <template>
     <div class="flex-1">
         <h2 class="text-center mb-4">Total Income: {{ $store.state.currency }}{{ totalIncome }}</h2>
+
         <form class="w-full sm:min-w-[300px] inline-grid grid-cols-[repeat(auto-fit,minmax(180px,_1fr))] gap-4" action="">
             <InputStandard :isMXN="isMXN" :data="this.$store.state.data.income1" :checkbox="true" checkboxLabel="13% Company Savings" />
             <InputStandard :isMXN="isMXN" :data="this.$store.state.data.income2" :checkbox="true" checkboxLabel="13% Company Savings" />
@@ -14,6 +15,7 @@
                     <div class="group-hover:hidden block">{{ Math.round(this.$store.state.data.rent.value / totalIncome * 100) }}%</div>
                     <div class="group-hover:block hidden">{{ Math.round(this.$store.state.data.rent.value / (totalIncome - totalExpensesMinusRent) * 100)  }}%</div>
                 </div>
+
             </div>
             <InputStandard :isMXN="isMXN" :data="this.$store.state.data.bills" />
             <div class="relative">
