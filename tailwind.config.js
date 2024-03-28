@@ -8,8 +8,8 @@ export default {
   theme: {
     extend: {},
       backgroundImage: {
-        'mexico': "url('src/assets/mexico-flag.png')",
-        'unitedKingdom': "url('src/assets/uk-flag.webp')",
+        'mexico': "url('/src/assets/mexico-flag.png')",
+        'unitedKingdom': "url('/src/assets/uk-flag.webp')",
       }
   },
   plugins: [],
