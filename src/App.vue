@@ -15,6 +15,8 @@ import Heading from '@/components/Heading.vue'
 import Body from '@/components/Body.vue'
 import Nav from '@/components/Nav.vue'
 import { computed } from 'vue'
+
+
 export default {
   components: {
     Heading,
@@ -60,6 +62,7 @@ export default {
     },
     toggleCurrency(isMXN) {
       this.isMXN = isMXN
+      this.$store.state.currency = this.isMXN ? '$' : '£'
     },
     removeAndRerender() {
       const theme = localStorage.isDarkModeTheme

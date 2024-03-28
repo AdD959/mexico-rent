@@ -23,8 +23,8 @@ export default {
     data() {
         return {
             backgroundColorsTheme: {
-                light: ["#71717a", "#a1a1aa", "#d4d4d8", "#eab308", "#fde047", "#22c55e", "#0ea5e9", "#ef4444", '#7dd3fc','#81818c'],
-                dark: ["#18181b", "#27272a", "#52525b", "#eab308", "#fde047", "#22c55e", "#0ea5e9", "#ef4444", '#7dd3fc','#26262b']
+                light: ["#71717a", "#a1a1aa", "#d4d4d8", "#eab308", "#fde047", "#22c55e", "#0ea5e9", "#ef4444", '#7dd3fc', '#81818c'],
+                dark: ["#18181b", "#27272a", "#52525b", "#eab308", "#fde047", "#22c55e", "#0ea5e9", "#ef4444", '#7dd3fc', '#26262b']
             },
             borderColorsTheme: {
                 light: '#52525b',
@@ -60,7 +60,7 @@ export default {
     },
     created() {
         this.chartData = {
-            labels: ['Rent', 'Bills', 'Tax', 'Food', 'Si Vale', 'Activities', 'Savings', 'Overspend','Company Savings','IMSS'],
+            labels: ['Rent', 'Bills', 'Tax', 'Food', 'Si Vale', 'Activities', 'Savings', 'Overspend', 'Company Savings', 'IMSS'],
             datasets: [{
                 data: [this.data.rent.value, this.data.bills.value, this.totalTax, this.totalFood, this.siVale, this.data.activities.value, this.totalSavings, this.totalDeficit, this.totalCompanySavings, this.totalIMSS],
                 backgroundColor: this.isDarkMode ? this.backgroundColorsTheme.dark : this.backgroundColorsTheme.light,
@@ -103,4 +103,3 @@ export default {
     },
 };
 </script>
-
