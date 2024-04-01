@@ -1,11 +1,11 @@
 <template>
     <div>
         <div class="flex flex-col md:flex-row gap-10 w-full">
-            <Chart :data="this.$store.state.data" :isDarkMode="isDarkMode" :siVale="siValeValue" :totalSavings="totalSavingsActual"
+            <Chart :data="this.$store.state.data" :isDarkMode="isDarkMode" :siVale="siValeValue" :siVale2="siVale2Value" :totalSavings="totalSavingsActual"
                 :totalIncome="totalIncome" :totalDeficit="totalDeficit" :totalTax="totalTax"
                 :totalCompanySavings="totalCompanySavings" :totalFood="totalFood" :totalIMSS="totalIMSS" />
             <Form :totalIncome="totalIncome" :totalSavings="totalSavings" :totalDeficit="totalDeficit"
-                :totalTax="totalTax" :totalFood="totalFood" :siValeRemainder="siValeRemainder" :siValeValue="siValeValue"
+                :totalTax="totalTax" :totalFood="totalFood" :siValeRemainder="siValeRemainder" :siValeValue="siValeValue" :siVale2Value="siVale2Value"
                 :totalCompanySavings="totalCompanySavings" :totalSavingsActual="totalSavingsActual" :isMXN="isMXN" :totalExpensesMinusRent="totalExpensesMinusRent" />
         </div>
     </div>
@@ -51,8 +51,12 @@ export default {
             if (!this.isMXN) { return Math.round(this.$store.state.data.siVale.value * (4307.68 / 20.5) > this.$store.state.data.food.value ? this.$store.state.data.food.value : this.$store.state.data.siVale.value * (4307.68 / 20.5)) }
             return Math.round(this.$store.state.data.siVale.value * 4307.68 > this.$store.state.data.food.value ? this.$store.state.data.food.value : this.$store.state.data.siVale.value * 4307.68)
         },
+        siVale2Value() {
+            if (!this.isMXN) { return Math.round(this.$store.state.data.siVale2.value * (3300 / 20.5) > this.$store.state.data.food.value ? this.$store.state.data.food.value : this.$store.state.data.siVale2.value * (3300 / 20.5)) }
+            return Math.round(this.$store.state.data.siVale2.value * 3300 > this.$store.state.data.food.value ? this.$store.state.data.food.value : this.$store.state.data.siVale2.value * 3300)
+        },
         siValeRemainder() {
-            return Math.round(this.$store.state.data.food.value - this.siValeValue < 0 ? 0 : this.$store.state.data.food.value - this.siValeValue)
+            return Math.round((this.$store.state.data.food.value - this.siValeValue) - this.siVale2Value < 0 ? 0 : (this.$store.state.data.food.value - this.siValeValue) - this.siVale2Value)
         },
         totalTax() {
             if (!this.isMXN) { return Math.round(Math.round(this.findThresholdIndex(this.$store.state.data.income1.value * 20.5) + this.findThresholdIndex(this.$store.state.data.income2.value * 20.5)) / 20.5) }
@@ -106,7 +110,7 @@ export default {
         },
         savingsChanged(val, savings, income2) {
             if (income2) {
-                this.companySavings2 = Math.round(savings ? this.$store.state.data.income2.value * 0.11 : 0)
+                this.companySavings2 = Math.round(savings ? this.$store.state.data.income2.value * 0.10 : 0)
             } else {
                 this.companySavings1 = Math.round(savings ? this.$store.state.data.income1.value * 0.11 : 0)
             }

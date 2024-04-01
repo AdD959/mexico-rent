@@ -4,7 +4,7 @@
 
         <form class="w-full sm:min-w-[300px] inline-grid grid-cols-[repeat(auto-fit,minmax(180px,_1fr))] gap-4" action="">
             <InputStandard :isMXN="isMXN" :data="this.$store.state.data.income1" :checkbox="true" checkboxLabel="11% Company Savings" />
-            <InputStandard :isMXN="isMXN" :data="this.$store.state.data.income2" :checkbox="true" checkboxLabel="11% Company Savings" />
+            <InputStandard :isMXN="isMXN" :data="this.$store.state.data.income2" :checkbox="true" checkboxLabel="10% Company Savings" />
             <div class="relative">
                 <div>
                     <InputStandard :isMXN="isMXN" :data="this.$store.state.data.rent" :checkboxLabel="`% of income`"/>
@@ -23,6 +23,7 @@
                 <div class="absolute right-0 top-1/2 pr-2 text-zinc-600 dark:text-zinc-500">({{ $store.state.currency }}{{ siValeRemainder }})</div>
             </div>
             <InputStandard :isMXN="isMXN" :data="this.$store.state.data.siVale" :checkboxLabel="`${ $store.state.currency }${siValeValue} discount`" />
+            <InputStandard :isMXN="isMXN" :data="this.$store.state.data.siVale2" :checkboxLabel="`${ $store.state.currency }${siVale2Value} discount`" />
             <InputStandard :isMXN="isMXN" :data="this.$store.state.data.activities" />
             <InputStandard :data="this.$store.state.data.tax" :readonly="true" :value="totalTax" />
             <div class="relative">
@@ -46,6 +47,7 @@ export default {
         totalTax: Number,
         siValeRemainder: Number,
         siValeValue: Number,
+        siVale2Value: Number,
         totalCompanySavings: Number,
         totalSavingsActual: Number,
         isMXN: Boolean,
